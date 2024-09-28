@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const User = new Schema(
     {
-        name: { type: String, required: [true, "Please provide name..."] },
-        email: { type: String, required: [true, "Please provide email..."], unique: true },
-        password: { type: String, required: [true, "Please provide password..."] },
+        //required: [true, "Please provide name..."] not available auto validate data
+        name: { type: String, required: [true, 'Please provide name...'] },
+        email: { type: String, required: [true, 'Please provide email...'], unique: true },
+        password: { type: String, required: [true, 'Please provide password...'] },
         profile_pic: { type: String, default: '' },
-
     },
     {
         collection: 'User',

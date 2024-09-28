@@ -1,9 +1,8 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
 
 //Enable CORS Policy
 const corsPolicy = (app) => {
-
     const corsOptions = {
         credentials: true,
         origin: process.env.FRONTEND_URL,
@@ -24,9 +23,20 @@ const corsPolicy = (app) => {
     // });
 };
 
-const serverMiddleware = [
-    corsPolicy,
+//Parser json
+const jsonParser = (app) => {
+    app.use(express.json());
+};
 
-];
+//(form html post len server (x-wwww-form-urlencoded) )
+const postHtml = (app) => {
+    app.use(
+        express.urlencoded({
+            extended: true,
+        }),
+    );
+};
+
+const serverMiddleware = [corsPolicy, jsonParser, postHtml];
 
 module.exports = serverMiddleware;
