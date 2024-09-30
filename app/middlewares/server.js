@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 //Enable CORS Policy
 const corsPolicy = (app) => {
@@ -37,6 +38,11 @@ const postHtml = (app) => {
     );
 };
 
-const serverMiddleware = [corsPolicy, jsonParser, postHtml];
+//Cookie parser
+const cookie = (app) => {
+    app.use(cookieParser());
+};
+
+const serverMiddleware = [corsPolicy, jsonParser, postHtml, cookie];
 
 module.exports = serverMiddleware;

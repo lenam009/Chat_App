@@ -209,6 +209,24 @@ class AuthController {
                 }),
             );
     }
+
+    //GET /auth/logout
+    async logout(req, res, next) {
+        try {
+            res.clearCookie('token');
+
+            return res.status(200).json({
+                statusCode: 200,
+                message: 'Logout successfully',
+            });
+        } catch (err) {
+            return next({
+                statusCode: 500,
+                message: err.message || 'logout has errors.....',
+                error: 'Server error',
+            });
+        }
+    }
 }
 
 module.exports = new AuthController();
