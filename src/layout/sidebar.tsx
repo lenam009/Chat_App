@@ -9,25 +9,25 @@ export default function SideBar() {
                 <div className="sb-sidenav-menu">
                     <div className="nav">
                         <div className="sb-sidenav-menu-heading">Core</div>
-                        <Link className="nav-link" to={routes.home.path}>
+                        <Link className="nav-link" to={'#'}>
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-tachometer-alt"></i>
                             </div>
                             Dashboard
                         </Link>
-                        <Link className="nav-link" to={routes.user.path}>
+                        <Link className="nav-link" to={'#'}>
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-tachometer-alt"></i>
                             </div>
                             User
                         </Link>
-                        <Link className="nav-link" to={routes.product.path}>
+                        <Link className="nav-link" to={'#'}>
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-tachometer-alt"></i>
                             </div>
                             Product
                         </Link>
-                        <Link className="nav-link" to={routes.order.path}>
+                        <Link className="nav-link" to={'#'}>
                             <div className="sb-nav-link-icon">
                                 <i className="fas fa-tachometer-alt"></i>
                             </div>
