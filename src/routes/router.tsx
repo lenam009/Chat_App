@@ -12,15 +12,44 @@ import {
     redirect,
     Navigate,
 } from 'react-router-dom';
+import MessagePage from '@/components/GlobalStyle/Message/MessagePage';
+import App from '@/App';
+import AuthLayout from '@/layout/auth.layout';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
-            <Route element={<Layout />}>
-                <Route path={routes.home.path} element={<Home />} />
-                <Route path={routes.register.path} element={<RegisterPage />} />
-                <Route path={routes.email.path} element={<CheckEmailPage />} />
-                <Route path={routes.password.path} element={<CheckPasswordPage />} />
+            <Route element={<App />}>
+                <Route path={routes.home.path} element={<Home />}>
+                    <Route path={routes.userId.path} element={<MessagePage />} />
+                </Route>
+
+                <Route
+                    path={routes.register.path}
+                    element={
+                        <AuthLayout>
+                            <RegisterPage />
+                        </AuthLayout>
+                    }
+                />
+
+                <Route
+                    path={routes.email.path}
+                    element={
+                        <AuthLayout>
+                            <CheckEmailPage />
+                        </AuthLayout>
+                    }
+                />
+
+                <Route
+                    path={routes.password.path}
+                    element={
+                        <AuthLayout>
+                            <CheckPasswordPage />
+                        </AuthLayout>
+                    }
+                />
             </Route>
         </Route>,
     ),

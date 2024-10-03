@@ -17,6 +17,9 @@ const routes = {
     password: {
         path: '/password',
     },
+    userId: {
+        path: '/:userId',
+    },
 };
 
 export default routes;
