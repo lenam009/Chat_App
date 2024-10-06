@@ -1,4 +1,8 @@
+import routes from '@/config/routes';
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { IoClose } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 
 export default function RegisterPage() {
     const [data, setData] = useState({
@@ -26,6 +30,16 @@ export default function RegisterPage() {
         }
     };
 
+    const handleClearUploadPhoto = (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        setUploadPhoto(null);
+    };
+
+    const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     return (
         <div className="mt-5">
             <div className="bg-white w-100 mx-2 rounded overflow-hidden p-4" style={{ maxWidth: '30%' }}>
@@ -33,7 +47,7 @@ export default function RegisterPage() {
                     Welcome to Chat app!
                 </h5>
 
-                <form className="d-grid gap-1 mt-2">
+                <form className="d-grid gap-1 mt-2" onSubmit={handleOnSubmit}>
                     <div className="d-flex flex-column gap-1">
                         <label htmlFor="name" className=" col-form-label">
                             Name:
@@ -89,13 +103,25 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="d-flex flex-column gap-1">
-                        <label htmlFor="profile_pic" className=" col-form-label">
+                        <label htmlFor="profile_pic" className="col-form-label">
                             Photo:
                             <div
-                                className="d-flex justify-content-center align-items-center rounded "
+                                className="d-flex justify-content-center align-items-center rounded mt-2"
                                 style={{ backgroundColor: '#E2E8F0', height: '100%', cursor: 'pointer' }}
                             >
-                                <p className="m-0">{uploadPhoto ? uploadPhoto.name : ' Upload profile photo'}</p>
+                                <p className="m-0" style={{ maxWidth: '300px' }}>
+                                    {uploadPhoto ? uploadPhoto.name : ' Upload profile photo'}
+                                </p>
+
+                                {uploadPhoto && (
+                                    <button
+                                        type="button"
+                                        className="d-flex mx-2 btn btn-outline-danger btn-sm"
+                                        onClick={handleClearUploadPhoto}
+                                    >
+                                        <IoClose />
+                                    </button>
+                                )}
                             </div>
                         </label>
                         <input
@@ -108,7 +134,16 @@ export default function RegisterPage() {
                             required
                         />
                     </div>
+
+                    <button className="btn btn-info mt-5 text-white fw-bold">Register</button>
                 </form>
+
+                <p className="my-2 text-center">
+                    Already have account ?{' '}
+                    <Link className="fw-bold" to={routes.email.path}>
+                        Login
+                    </Link>
+                </p>
             </div>
         </div>
     );
