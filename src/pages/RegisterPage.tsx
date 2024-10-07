@@ -1,4 +1,5 @@
 import routes from '@/config/routes';
+import uploadFile from '@/helpers/uploadFile';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { IoClose } from 'react-icons/io5';
@@ -22,10 +23,15 @@ export default function RegisterPage() {
         });
     };
 
-    const handleUploadPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
 
         if (file) {
+            const uploadPhoto = await uploadFile(file)
+                .then((res) => res.json())
+                .then((res) => console.log('res', res))
+                .catch((err) => console.log('error uploadPhoto', err));
+
             setUploadPhoto(file);
         }
     };
@@ -38,11 +44,12 @@ export default function RegisterPage() {
     const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         e.stopPropagation();
+        console.log('data', data);
     };
 
     return (
         <div className="mt-5">
-            <div className="bg-white w-100 mx-2 rounded overflow-hidden p-4" style={{ maxWidth: '30%' }}>
+            <div className="bg-white w-100  rounded overflow-hidden p-4 mx-auto" style={{ maxWidth: '30%' }}>
                 <h5 className="my-0" style={{ color: '#00acb4' }}>
                     Welcome to Chat app!
                 </h5>
@@ -131,11 +138,12 @@ export default function RegisterPage() {
                             className="form-control visually-hidden"
                             value={data.profile_pic}
                             onChange={handleUploadPhoto}
-                            required
                         />
                     </div>
 
-                    <button className="btn btn-info mt-5 text-white fw-bold">Register</button>
+                    <button type="submit" className="btn btn-info mt-5 text-white fw-bold">
+                        Register
+                    </button>
                 </form>
 
                 <p className="my-2 text-center">
