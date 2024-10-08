@@ -4,8 +4,10 @@ const User = require('../models/User');
 const getUsersDetailFromToken = async (token) => {
     if (!token) {
         return {
+            statusCode: 400,
             message: 'session out',
             logout: true,
+            error: 'session out',
         };
     }
 
