@@ -16,9 +16,7 @@ const axiosCreate: AxiosInstance = axios.create({
 
 axiosCreate.defaults.withCredentials = true;
 
-axiosCreate.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
-    'access_token',
-)}`;
+axiosCreate.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
 
 // const AxiosRequestHandler = ({ children }: { children: any }) => {
 //     const currentUser = useAppSelector(getUserCurrentSelector);
@@ -75,7 +73,7 @@ axiosCreate.defaults.headers.common['Authorization'] = `Bearer ${localStorage.ge
 axiosCreate.interceptors.response.use(
     //@ts-ignore
     function (response: AxiosResponse) {
-        return response.data;
+        return response.data as IBackendRes<any>;
     },
     function (error: AxiosError<IBackendRes<any>>) {
         message.error(error.response?.data.message);

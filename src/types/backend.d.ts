@@ -31,30 +31,9 @@ declare global {
 
     interface IUser {
         _id: string;
-        username: string;
+        name: string;
         email: string;
-        profilePicture: string;
-        coverPicture: string;
-        followers: string[];
-        followings: string[];
-        isAdmin: boolean;
-        desc: string;
-        city: string;
-        from: string;
-        relationship?: number;
-        createdAt: string;
-        updatedAt: string;
-        __v?: any;
-    }
-
-    interface IPost {
-        _id?: string;
-        userId: string;
-        desc: string;
-        img?: string;
-        likes: string[];
-        createdAt: string;
-        updatedAt: string;
-        video?: string;
+        profile_pic: string;
+        password: string;
     }
 }

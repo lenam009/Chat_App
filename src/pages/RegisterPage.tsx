@@ -1,9 +1,13 @@
 import routes from '@/config/routes';
 import uploadFile from '@/helpers/uploadFile';
+import axios from 'axios';
+import { url } from 'inspector';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { IoClose } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import axiosCreate from '@/api';
 
 export default function RegisterPage() {
     const [data, setData] = useState({
@@ -14,6 +18,7 @@ export default function RegisterPage() {
     });
 
     const [uploadPhoto, setUploadPhoto] = useState<File | null>(null);
+    const navigate = useNavigate();
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -29,10 +34,14 @@ export default function RegisterPage() {
         if (file) {
             const uploadPhoto = await uploadFile(file)
                 .then((res) => res.json())
-                .then((res) => console.log('res', res))
+                .then((res) => {
+                    console.log('res', res);
+                    return res;
+                })
                 .catch((err) => console.log('error uploadPhoto', err));
 
-            setUploadPhoto(file);
+            setUploadPhoto((prev) => file);
+            setData((prev) => ({ ...prev, profile_pic: uploadPhoto.url }));
         }
     };
 
@@ -41,9 +50,28 @@ export default function RegisterPage() {
         setUploadPhoto(null);
     };
 
-    const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         e.stopPropagation();
+
+        const URL = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/auth/register`;
+
+        const response = (await axiosCreate
+            .post(URL, data)
+            .then((res) => {
+                //@ts-ignore
+                toast.success(res.message);
+                setData({
+                    name: '',
+                    email: '',
+                    password: '',
+                    profile_pic: '',
+                });
+                navigate(routes.email.path);
+                return res;
+            })
+            .catch((err) => null)) as IBackendRes<IUser> | null;
+
         console.log('data', data);
     };
 
@@ -136,7 +164,6 @@ export default function RegisterPage() {
                             id="profile_pic"
                             name="profile_pic"
                             className="form-control visually-hidden"
-                            value={data.profile_pic}
                             onChange={handleUploadPhoto}
                         />
                     </div>
