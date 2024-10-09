@@ -68,7 +68,6 @@ export default function RegisterPage() {
                     profile_pic: '',
                 });
                 navigate(routes.email.path);
-                return res;
             })
             .catch((err) => null)) as IBackendRes<IUser> | null;
 

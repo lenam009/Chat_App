@@ -35,5 +35,7 @@ declare global {
         email: string;
         profile_pic: string;
         password: string;
+        createdAt: string;
+        updatedAt: string;
     }
 }
