@@ -15,6 +15,7 @@ import {
 import MessagePage from '@/components/GlobalStyle/Message/MessagePage';
 import App from '@/App';
 import AuthLayout from '@/layout/auth.layout';
+import ForgotPassword from '@/pages/ForgotPassword';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -47,6 +48,15 @@ const router = createBrowserRouter(
                     element={
                         <AuthLayout>
                             <CheckPasswordPage />
+                        </AuthLayout>
+                    }
+                />
+
+                <Route
+                    path={routes.forgot_password.path}
+                    element={
+                        <AuthLayout>
+                            <ForgotPassword />
                         </AuthLayout>
                     }
                 />

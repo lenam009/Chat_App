@@ -29,14 +29,14 @@ export default function Avatar({ userId, name, imageUrl, width, height }: IProp)
 
     return (
         <div
-            className={`overflow-hidden rounded-circle shadow border fw-bold ${bgColor[roundNumber]}`}
+            className={`overflow-hidden rounded-circle shadow border fw-bold `}
             style={{ width: width + 'px', height: height + 'px' }}
         >
             {imageUrl ? (
                 <img src={imageUrl} width={width} height={height} alt={name} className="overflow-hidden rounded " />
             ) : name ? (
                 <div
-                    className="overflow-hidden rounded d-flex justify-content-center align-items-center "
+                    className={`overflow-hidden rounded d-flex justify-content-center align-items-center fs-5  ${bgColor[roundNumber]}`}
                     style={{ width: width + 'px', height: height + 'px' }}
                 >
                     {avatarName}

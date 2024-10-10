@@ -20,6 +20,9 @@ const routes = {
     userId: {
         path: '/:userId',
     },
+    forgot_password: {
+        path: '/forgot_password',
+    },
 };
 
 export default routes;
