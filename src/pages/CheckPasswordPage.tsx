@@ -8,6 +8,7 @@ import { PiUserCircle } from 'react-icons/pi';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axiosCreate from '@/api';
+import Avatar from '@/components/GlobalStyle/Avatar/Avatar';
 
 export default function CheckPasswordPage() {
     const [data, setData] = useState({
@@ -16,8 +17,9 @@ export default function CheckPasswordPage() {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const stateLocation = location?.state as IUser;
 
-    console.log('location', location.state);
+    console.log('stateLocation', stateLocation);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -51,8 +53,9 @@ export default function CheckPasswordPage() {
     return (
         <div className="mt-5">
             <div className="bg-white w-100  rounded overflow-hidden p-4 mx-auto" style={{ maxWidth: '30%' }}>
-                <div className="mb-3">
-                    <PiUserCircle size={70} className="mx-auto d-flex" />
+                <div className="mb-3 d-flex flex-column align-items-center">
+                    <Avatar width="70" height="70" name={stateLocation?.name} imageUrl={stateLocation?.profile_pic} />
+                    <h5>{stateLocation?.name}</h5>
                 </div>
 
                 <h5 className="my-0" style={{ color: '#00acb4' }}>
