@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { AxiosInstance } from 'axios';
 import { useAppSelector } from '@/redux/hook';
-import { getUserCurrentSelector } from '@/redux/userSlice';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useRef } from 'react';
 import { message } from 'antd';

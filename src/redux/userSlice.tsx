@@ -2,81 +2,51 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-import { IUser } from '@/api/userApi';
-
 interface IState {
-    user: IUser | null;
-    isFetching: boolean;
-    error: boolean;
-    success?: boolean;
+    _id: string;
+    name: string;
+    email: string;
+    profile_pic: string;
+    token: string;
 }
 
 const initialState: IState = {
-    user: null,
-    isFetching: false,
-    error: false,
-    success: false,
+    _id: '',
+    name: '',
+    email: '',
+    profile_pic: '',
+    token: '',
 };
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<IUser | null>) => {
-            state.user = action.payload;
+        setUser: (state, action: PayloadAction<IUser>) => {
+            state._id = action.payload._id;
+            state.name = action.payload.name;
+            state.email = action.payload.email;
+            state.profile_pic = action.payload.profile_pic;
         },
-        setIsFetching: (state, action: PayloadAction<boolean>) => {
-            state.isFetching = action.payload;
+        setToken: (state, action: PayloadAction<string>) => {
+            state.token = action.payload;
         },
-
-        // JWT...
-        loginStart: (state) => {
-            state.isFetching = true;
-            state.error = false;
-        },
-        loginSuccess: (state, action: PayloadAction<IUser | null>) => {
-            state.isFetching = false;
-            state.user = action.payload;
-            state.error = false;
-        },
-        loginFailed: (state) => {
-            state.isFetching = false;
-            state.error = true;
-        },
-        //Register
-        registerStart: (state) => {
-            state.isFetching = true;
-            state.error = false;
-        },
-        registerSuccess: (state) => {
-            state.isFetching = false;
-            state.error = false;
-            state.success = true;
-        },
-        registerFailed: (state) => {
-            state.isFetching = false;
-            state.error = true;
-            state.success = false;
+        logout: (state, action: PayloadAction<void>) => {
+            state._id = '';
+            state.name = '';
+            state.email = '';
+            state.profile_pic = '';
         },
     },
 });
 
 // Action
-export const {
-    setUser,
-    setIsFetching,
-    loginStart,
-    loginSuccess,
-    loginFailed,
-    registerStart,
-    registerSuccess,
-    registerFailed,
-} = userSlice.actions;
+export const { setUser, setToken, logout } = userSlice.actions;
 
 //Selector
-export const getUserCurrentSelector = (state: RootState) => state.userSlice.user;
-export const getIsFetching = (state: RootState) => state.userSlice.isFetching;
-export const getIsErrorSelector = (state: RootState) => state.userSlice.error;
-export const getIsSuccessSelector = (state: RootState) => state.userSlice.success;
+// export const getUserCurrentSelector = (state: RootState) => state.userSlice.user;
+// export const getIsFetching = (state: RootState) => state.userSlice.isFetching;
+// export const getIsErrorSelector = (state: RootState) => state.userSlice.error;
+// export const getIsSuccessSelector = (state: RootState) => state.userSlice.success;
 
 export default userSlice.reducer;

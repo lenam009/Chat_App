@@ -1,14 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import {
-    persistStore,
-    persistReducer,
-    FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER,
-} from 'redux-persist';
+import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import userSlice from './userSlice';
@@ -23,23 +14,23 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     userSlice,
-    [userRrkReduxApi.reducerPath]: userRrkReduxApi.reducer,
+    // [userRrkReduxApi.reducerPath]: userRrkReduxApi.reducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
     reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }).concat(userRrkReduxApi.middleware),
+    // middleware: (getDefaultMiddleware) =>
+    //     getDefaultMiddleware({
+    //         serializableCheck: {
+    //             ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    //         },
+    //     }).concat(userRrkReduxApi.middleware),
 });
 
-setupListeners(store.dispatch);
+// setupListeners(store.dispatch);
 
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

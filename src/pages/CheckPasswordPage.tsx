@@ -9,6 +9,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axiosCreate from '@/api';
 import Avatar from '@/components/GlobalStyle/Avatar/Avatar';
+import { useAppDispatch } from '@/redux/hook';
+import { setToken, setUser } from '@/redux/userSlice';
 
 export default function CheckPasswordPage() {
     const [data, setData] = useState({
@@ -18,6 +20,7 @@ export default function CheckPasswordPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const stateLocation = location?.state as IUser;
+    const dispatch = useAppDispatch();
 
     console.log('stateLocation', stateLocation);
 
@@ -46,6 +49,10 @@ export default function CheckPasswordPage() {
             .then((res) => {
                 //@ts-ignore
                 toast.success(res.message);
+                //@ts-ignore
+                dispatch(setToken(res.token));
+                console.log('res', res);
+
                 setData({
                     password: '',
                 });
