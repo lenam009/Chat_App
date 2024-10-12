@@ -19,8 +19,9 @@ export default function CheckPasswordPage() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const stateLocation = location?.state as IUser;
     const dispatch = useAppDispatch();
+
+    const stateLocation = location?.state as IUser;
 
     console.log('stateLocation', stateLocation);
 
@@ -51,8 +52,8 @@ export default function CheckPasswordPage() {
                 toast.success(res.message);
                 //@ts-ignore
                 dispatch(setToken(res.token));
-                console.log('res', res);
-
+                //@ts-ignore
+                localStorage.setItem('token', res.token);
                 setData({
                     password: '',
                 });

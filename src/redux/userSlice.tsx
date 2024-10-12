@@ -49,4 +49,6 @@ export const { setUser, setToken, logout } = userSlice.actions;
 // export const getIsErrorSelector = (state: RootState) => state.userSlice.error;
 // export const getIsSuccessSelector = (state: RootState) => state.userSlice.success;
 
+export const getUser = (state: RootState) => state.userSlice;
+
 export default userSlice.reducer;
