@@ -11,7 +11,13 @@ class UserController {
 
             const user = await getUsersDetailFromToken(token);
 
-            if (user.statusCode && user.statusCode != 200) return res.status(200).json(user);
+            if (user.statusCode && user.statusCode != 200)
+                return res.status(400).json({
+                    statusCode: 400,
+                    message: 'session out',
+                    logout: true,
+                    error: 'session out',
+                });
 
             return res.status(200).json({
                 statusCode: 200,
