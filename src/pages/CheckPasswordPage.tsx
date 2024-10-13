@@ -8,7 +8,7 @@ import { PiUserCircle } from 'react-icons/pi';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axiosCreate from '@/api';
-import Avatar from '@/components/GlobalStyle/Avatar/Avatar';
+import Avatar from '@/components/Avatar/Avatar';
 import { useAppDispatch } from '@/redux/hook';
 import { setToken, setUser } from '@/redux/userSlice';
 

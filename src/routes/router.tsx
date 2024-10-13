@@ -12,7 +12,7 @@ import {
     redirect,
     Navigate,
 } from 'react-router-dom';
-import MessagePage from '@/components/GlobalStyle/Message/MessagePage';
+import MessagePage from '@/components/Message/MessagePage';
 import App from '@/App';
 import AuthLayout from '@/layout/auth.layout';
 import ForgotPassword from '@/pages/ForgotPassword';

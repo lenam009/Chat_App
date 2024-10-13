@@ -4,6 +4,8 @@ import axiosCreate from '@/api';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { getUser, logout, setUser } from '@/redux/userSlice';
 import routes from '@/config/routes';
+import { Height } from '@mui/icons-material';
+import SideBar from '@/components/SideBar/SideBar';
 
 export default function Home() {
     const user = useAppSelector(getUser);
@@ -18,17 +20,17 @@ export default function Home() {
             .get(URL)
             .then((res) => {
                 console.log('resFetchUserDetails', res);
-                //@ts-ignore
-                if (res.logout) {
-                    dispatch(logout());
-                    navigate(routes.email.path);
-                }
-
                 dispatch(setUser(res.data));
 
                 return res;
             })
-            .catch((err) => null)) as IBackendRes<IUser> | null;
+            .catch((err) => {
+                if (err.logout) {
+                    dispatch(logout());
+                    navigate(routes.email.path);
+                }
+                return null;
+            })) as IBackendRes<IUser> | null;
     };
 
     useEffect(() => {
@@ -36,8 +38,10 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="d-grid" style={{ gridTemplateColumns: '2fr 8fr' }}>
-            <section className="bg-white">sidebar</section>
+        <div className="d-grid " style={{ gridTemplateColumns: '2fr 8fr', height: '100vh' }}>
+            <section className="bg-white">
+                <SideBar />
+            </section>
 
             {/* Message component */}
             <section>
