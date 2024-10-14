@@ -28,10 +28,7 @@ export default function Avatar({ userId, name, imageUrl, width, height }: IProp)
     const roundNumber = Math.floor(Math.random() * 5);
 
     return (
-        <div
-            className={`overflow-hidden rounded-circle shadow border fw-bold `}
-            style={{ width: width + 'px', height: height + 'px' }}
-        >
+        <div className={`overflow-hidden rounded-circle shadow border fw-bold `} style={{ width: width + 'px', height: height + 'px' }}>
             {imageUrl ? (
                 <img src={imageUrl} width={width} height={height} alt={name} className="overflow-hidden rounded " />
             ) : name ? (

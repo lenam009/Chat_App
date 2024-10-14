@@ -2,15 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-interface IState {
-    _id: string;
-    name: string;
-    email: string;
-    profile_pic: string;
-    token: string;
-}
-
-const initialState: IState = {
+const initialState: IUser = {
     _id: '',
     name: '',
     email: '',

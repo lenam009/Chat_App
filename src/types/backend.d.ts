@@ -35,8 +35,9 @@ declare global {
         name: string;
         email: string;
         profile_pic: string;
-        password: string;
-        createdAt: string;
-        updatedAt: string;
+        password?: string;
+        createdAt?: string;
+        updatedAt?: string;
+        token: string;
     }
 }
