@@ -52,7 +52,7 @@ export default function SideBar() {
                         title={user?.name}
                         onClick={() => setEditUserOpen(true)}
                     >
-                        <Avatar width="40" height="40" name={user?.name} />
+                        <Avatar width="40" height="40" name={user?.name} imageUrl={user?.profile_pic} />
                     </button>
                     <button
                         className={`py-3 d-flex justify-content-center align-items-center ${styles['message']}`}
@@ -65,7 +65,7 @@ export default function SideBar() {
             </div>
 
             {/** edit user details */}
-            {editUserOpen && <EditUserDetails onClose={() => setEditUserOpen(false)} data={user} />}
+            {editUserOpen && <EditUserDetails onClose={() => setEditUserOpen(false)} user={user} />}
         </div>
     );
 }
