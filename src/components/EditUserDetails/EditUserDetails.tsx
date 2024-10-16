@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Avatar from '../Avatar/Avatar';
+import uploadFile from '@/helpers/uploadFile';
+import Divider from '../Divider/Divider';
+import axiosCreate from '@/api';
+import toast from 'react-hot-toast';
 
 interface IProps {
     onClose: () => void;
@@ -12,6 +16,10 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
         profile_pic: user?.profile_pic,
     });
 
+    const [isUploadPhoto, setIsUploadPhoto] = useState(false);
+
+    const uploadPhotoRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
         setData((prev) => ({ ...prev, ...user }));
     }, [user]);
@@ -23,6 +31,55 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
         setData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const handleOpenUploadPhoto = (e: React.MouseEvent<HTMLElement>) => {
+        uploadPhotoRef.current?.click();
+    };
+
+    const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files && e.target.files[0];
+
+        if (file) {
+            setIsUploadPhoto(true);
+
+            const uploadPhoto = await uploadFile(file)
+                .then((res) => res.json())
+                .then((res) => {
+                    console.log('res', res);
+                    return res;
+                })
+                .catch((err) => console.log('error uploadPhoto', err));
+
+            setIsUploadPhoto(false);
+
+            setData((prev) => ({ ...prev, profile_pic: uploadPhoto.url }));
+        }
+    };
+
+    const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const URL = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/user/update-user`;
+
+        const response = (await axiosCreate
+            .put(URL, data)
+            .then((res) => {
+                //@ts-ignore
+                toast.success(res.message);
+
+                //@ts-ignore
+                console.log('res.message', res.message);
+
+                // setData({
+                //     name: '',
+                //     profile_pic: '',
+                // });
+
+                return res;
+            })
+            .catch((err) => null)) as IBackendRes<IUser> | null;
+    };
+
     return (
         <div
             className="d-flex justify-content-center align-items-center"
@@ -32,7 +89,7 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
                 <h5>Profile Details</h5>
                 <p className="">Edit user details</p>
 
-                <form>
+                <form onSubmit={handleOnSubmit}>
                     <div className="mb-3">
                         <label htmlFor="name" className="">
                             Name:
@@ -43,15 +100,31 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
                     </div>
 
                     <div className="">
-                        <label htmlFor="profile_pic" className="">
-                            Photo:
-                        </label>
+                        <label htmlFor="profile_pic">Photo</label>
                         <div className="my-1 d-flex align-items-center gap-4">
                             <Avatar width="40" height="40" name={data?.name} imageUrl={data?.profile_pic} />
-                            <button type="button" className="btn btn-outline-primary">
+                            <button type="button" className="btn btn-outline-white" onClick={handleOpenUploadPhoto}>
                                 Change photo
                             </button>
+                            <input ref={uploadPhotoRef} type="file" id="profile_pic" style={{ display: 'none' }} onChange={handleUploadPhoto} />
                         </div>
+                    </div>
+
+                    <Divider />
+
+                    <div className="d-flex gap-2 justify-content-end mt-3 ">
+                        <button onClick={onClose} className="btn btn-outline-danger">
+                            Cancel
+                        </button>
+                        <button type="submit" className="btn btn-primary" disabled={isUploadPhoto}>
+                            {isUploadPhoto ? (
+                                <div className="spinner-border text-light spinner-border-sm" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                            ) : (
+                                'Save'
+                            )}
+                        </button>
                     </div>
                 </form>
             </div>
