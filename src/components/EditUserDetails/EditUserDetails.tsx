@@ -4,6 +4,8 @@ import uploadFile from '@/helpers/uploadFile';
 import Divider from '../Divider/Divider';
 import axiosCreate from '@/api';
 import toast from 'react-hot-toast';
+import { useAppDispatch } from '@/redux/hook';
+import { setUser } from '@/redux/userSlice';
 
 interface IProps {
     onClose: () => void;
@@ -17,6 +19,7 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
     });
 
     const [isUploadPhoto, setIsUploadPhoto] = useState(false);
+    const dispatch = useAppDispatch();
 
     const uploadPhotoRef = useRef<HTMLInputElement>(null);
 
@@ -35,12 +38,33 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
         uploadPhotoRef.current?.click();
     };
 
-    const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleShowUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
 
         if (file) {
-            setIsUploadPhoto(true);
+            setData((prev) => ({ ...prev, profile_pic: URL.createObjectURL(file) }));
+        }
 
+        // if (file) {
+        //     setIsUploadPhoto(true);
+
+        //     const uploadPhoto = await uploadFile(file)
+        //         .then((res) => res.json())
+        //         .then((res) => {
+        //             console.log('res', res);
+        //             return res;
+        //         })
+        //         .catch((err) => console.log('error uploadPhoto', err));
+
+        //     setIsUploadPhoto(false);
+
+        //     setData((prev) => ({ ...prev, profile_pic: uploadPhoto.url }));
+        // }
+    };
+
+    const handleGetUrlUploadPhoto = async () => {
+        const file = uploadPhotoRef.current?.files && uploadPhotoRef.current?.files[0];
+        if (file) {
             const uploadPhoto = await uploadFile(file)
                 .then((res) => res.json())
                 .then((res) => {
@@ -49,11 +73,15 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
                 })
                 .catch((err) => console.log('error uploadPhoto', err));
 
-            setIsUploadPhoto(false);
+            setData((prev) => {
+                return { ...prev, profile_pic: uploadPhoto.url };
+            });
 
-            setData((prev) => ({ ...prev, profile_pic: uploadPhoto.url }));
+            return uploadPhoto.url;
         }
     };
+
+    // console.log('data-1', data);
 
     const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -61,9 +89,17 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
 
         const URL = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/user/update-user`;
 
+        setIsUploadPhoto(true);
+
+        const UrlUploadPhoto = await handleGetUrlUploadPhoto();
+
+        // console.log('data-2', data);
+
         const response = (await axiosCreate
-            .put(URL, data)
+            .put(URL, { ...data, profile_pic: UrlUploadPhoto })
             .then((res) => {
+                // Upload Photo
+
                 //@ts-ignore
                 toast.success(res.message);
 
@@ -78,6 +114,14 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
                 return res;
             })
             .catch((err) => null)) as IBackendRes<IUser> | null;
+
+        setIsUploadPhoto(false);
+
+        // Refresh page to refresh profile_pic
+        if (response?.data) {
+            dispatch(setUser(response.data));
+            onClose();
+        }
     };
 
     return (
@@ -100,13 +144,13 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
                     </div>
 
                     <div className="">
-                        <label htmlFor="profile_pic">Photo</label>
+                        <label htmlFor="profile_pic">Photo:</label>
                         <div className="my-1 d-flex align-items-center gap-4">
                             <Avatar width="40" height="40" name={data?.name} imageUrl={data?.profile_pic} />
                             <button type="button" className="btn btn-outline-white" onClick={handleOpenUploadPhoto}>
                                 Change photo
                             </button>
-                            <input ref={uploadPhotoRef} type="file" id="profile_pic" style={{ display: 'none' }} onChange={handleUploadPhoto} />
+                            <input ref={uploadPhotoRef} type="file" id="profile_pic" style={{ display: 'none' }} onChange={handleShowUploadPhoto} />
                         </div>
                     </div>
 
