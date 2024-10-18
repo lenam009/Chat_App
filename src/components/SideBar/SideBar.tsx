@@ -15,11 +15,10 @@ export default function SideBar() {
     const [editUserOpen, setEditUserOpen] = useState(false);
 
     return (
-        <div className="w-100 h-100">
+        <div className="w-100 h-100 d-grid" style={{ gridTemplateColumns: '1.5fr 8fr' }}>
             <div
-                className="h-100 py-4 d-flex flex-column justify-content-between"
+                className="h-100 py-4 d-flex flex-column justify-content-between "
                 style={{
-                    width: '15%',
                     backgroundColor: 'rgba(22,24,35,0.09)',
                     borderRadius: '0px 8px 8px 0px',
                 }}
@@ -62,6 +61,14 @@ export default function SideBar() {
                         <TbLogout2 size={20} className="me-2" />
                     </button>
                 </div>
+            </div>
+
+            <div
+                style={{
+                    backgroundColor: 'red',
+                }}
+            >
+                sidebar
             </div>
 
             {/** edit user details */}

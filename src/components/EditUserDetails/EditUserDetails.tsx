@@ -44,22 +44,6 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
         if (file) {
             setData((prev) => ({ ...prev, profile_pic: URL.createObjectURL(file) }));
         }
-
-        // if (file) {
-        //     setIsUploadPhoto(true);
-
-        //     const uploadPhoto = await uploadFile(file)
-        //         .then((res) => res.json())
-        //         .then((res) => {
-        //             console.log('res', res);
-        //             return res;
-        //         })
-        //         .catch((err) => console.log('error uploadPhoto', err));
-
-        //     setIsUploadPhoto(false);
-
-        //     setData((prev) => ({ ...prev, profile_pic: uploadPhoto.url }));
-        // }
     };
 
     const handleGetUrlUploadPhoto = async () => {
@@ -91,9 +75,8 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
 
         setIsUploadPhoto(true);
 
+        // Upload photo and Get Url
         const UrlUploadPhoto = await handleGetUrlUploadPhoto();
-
-        // console.log('data-2', data);
 
         const response = (await axiosCreate
             .put(URL, { ...data, profile_pic: UrlUploadPhoto })
@@ -105,11 +88,6 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
 
                 //@ts-ignore
                 console.log('res.message', res.message);
-
-                // setData({
-                //     name: '',
-                //     profile_pic: '',
-                // });
 
                 return res;
             })
