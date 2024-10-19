@@ -9,13 +9,15 @@ import Avatar from '../Avatar/Avatar';
 import { useAppSelector } from '@/redux/hook';
 import { getUser } from '@/redux/userSlice';
 import EditUserDetails from '../EditUserDetails/EditUserDetails';
+import Divider from '../Divider/Divider';
 
 export default function SideBar() {
     const user = useAppSelector(getUser);
     const [editUserOpen, setEditUserOpen] = useState(false);
+    const [allUser, setAllUser] = useState([]);
 
     return (
-        <div className="w-100 h-100 d-grid" style={{ gridTemplateColumns: '1.5fr 8fr' }}>
+        <div className="w-100 h-100 d-grid bg-white" style={{ gridTemplateColumns: '1.5fr 8fr' }}>
             <div
                 className="h-100 py-4 d-flex flex-column justify-content-between "
                 style={{
@@ -63,12 +65,16 @@ export default function SideBar() {
                 </div>
             </div>
 
-            <div
-                style={{
-                    backgroundColor: 'red',
-                }}
-            >
-                sidebar
+            <div>
+                <div style={{ height: '64px' }}>
+                    <h5 className="p-2 py-3 ">Message</h5>
+                </div>
+
+                <div style={{ padding: '0.5px', backgroundColor: 'rgba(22,24,35,0.2)' }}></div>
+
+                <div className="" style={{ height: 'calc(100vh - 65px)', overflowX: 'hidden', overflowY: 'auto' }}>
+                    message
+                </div>
             </div>
 
             {/** edit user details */}
