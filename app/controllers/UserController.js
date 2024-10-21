@@ -69,6 +69,38 @@ class UserController {
             });
         }
     }
+
+    ///POST - search-user
+    async searchUser(req, res, next) {
+        try {
+            const { search } = req.body;
+
+            const query = new RegExp(search, 'i', 'g');
+
+            User.find({ $or: [{ name: query }, { email: query }] })
+                .select('-password')
+                .then((response) =>
+                    res.status(200).json({
+                        statusCode: 200,
+                        message: 'searchUser successfully',
+                        data: response,
+                    }),
+                )
+                .catch(() =>
+                    next({
+                        statusCode: 500,
+                        message: 'searchUser failed',
+                        error: 'searchUser failed',
+                    }),
+                );
+        } catch (err) {
+            return next({
+                statusCode: 500,
+                message: err.message || 'searchUser has errors.....',
+                error: 'Server error',
+            });
+        }
+    }
 }
 
 module.exports = new UserController();
