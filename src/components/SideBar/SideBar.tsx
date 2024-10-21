@@ -17,7 +17,7 @@ export default function SideBar() {
     const user = useAppSelector(getUser);
     const [editUserOpen, setEditUserOpen] = useState(false);
     const [allUser, setAllUser] = useState([]);
-    const [openSearchUser, setOpenSearchUser] = useState(true);
+    const [openSearchUser, setOpenSearchUser] = useState(false);
 
     return (
         <div className="w-100 h-100 d-grid bg-white" style={{ gridTemplateColumns: '1.5fr 8fr' }}>

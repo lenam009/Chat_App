@@ -1,0 +1,8 @@
+.borderCard {
+    border-color: transparent transparent rgba(22, 24, 35, 0.2) transparent !important;
+
+    &:hover {
+        border-color: rgb(13, 202, 240) !important;
+        cursor: pointer;
+    }
+}

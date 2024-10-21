@@ -19,6 +19,7 @@ const routes = {
     },
     userId: {
         path: '/:userId',
+        pathOrigin: '/',
     },
     forgot_password: {
         path: '/forgot_password',

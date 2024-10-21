@@ -14,7 +14,8 @@ export default function Home() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const basePath = location.pathname === '/';
+    let basePath = location.pathname === '/';
+
     console.log('basePath', basePath);
 
     const fetchUserDetails = async () => {
@@ -42,7 +43,7 @@ export default function Home() {
 
     return (
         <div className="d-grid " style={{ gridTemplateColumns: '2fr 8fr', height: '100vh' }}>
-            <section className={`bg-white ${!basePath && 'd-none'}`}>
+            <section className={`bg-white `}>
                 <SideBar />
             </section>
 
@@ -51,7 +52,8 @@ export default function Home() {
                 <Outlet />
             </section>
 
-            <div className="d-flex justify-content-center align-items-center flex-column gap-3">
+            {/**Logo */}
+            <div className={`d-flex justify-content-center align-items-center flex-column gap-3 ${!basePath ? 'd-none' : 'd-block'}`}>
                 <div>
                     <img src={logo} width={230} alt="logo" />
                 </div>
