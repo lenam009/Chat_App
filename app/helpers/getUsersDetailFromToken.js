@@ -13,7 +13,16 @@ const getUsersDetailFromToken = async (token) => {
 
     const decode = await jwt.verify(token, process.env.ACCESS_KEY);
 
-    const user = await User.findById(decode.id).select('-password');
+    const user = await User.findById(decode.id).select('-password').catch();
+
+    if (!user) {
+        return {
+            statusCode: 400,
+            message: 'user invalid',
+            logout: true,
+            error: 'user invalid',
+        };
+    }
 
     return user;
 };
