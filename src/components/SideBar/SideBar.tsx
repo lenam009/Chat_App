@@ -57,7 +57,7 @@ export default function SideBar() {
                         title={user?.name}
                         onClick={() => setEditUserOpen(true)}
                     >
-                        <Avatar width="40" height="40" name={user?.name} imageUrl={user?.profile_pic} />
+                        <Avatar width="40" height="40" userId={user?._id} name={user?.name} imageUrl={user?.profile_pic} />
                     </button>
                     <button
                         className={`py-3 d-flex justify-content-center align-items-center ${styles['message']}`}

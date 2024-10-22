@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axiosCreate from '@/api';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { getUser, logout, setUser } from '@/redux/userSlice';
+import { getUser, logout, setOnlineUser, setUser } from '@/redux/userSlice';
 import routes from '@/config/routes';
 import { Height } from '@mui/icons-material';
 import SideBar from '@/components/SideBar/SideBar';
 import logo from '@/assets/logo.png';
+import io from 'socket.io-client';
 
 export default function Home() {
     const user = useAppSelector(getUser);
@@ -39,6 +40,24 @@ export default function Home() {
 
     useEffect(() => {
         fetchUserDetails();
+    }, []);
+
+    /** Socket Connection */
+    useEffect(() => {
+        const socketConnection = io('http://localhost:8080', {
+            auth: {
+                token: localStorage.getItem('token'),
+            },
+        });
+
+        socketConnection.on('onlineUser', (data) => {
+            console.log('data', data);
+            dispatch(setOnlineUser(data));
+        });
+
+        return () => {
+            socketConnection.disconnect();
+        };
     }, []);
 
     return (

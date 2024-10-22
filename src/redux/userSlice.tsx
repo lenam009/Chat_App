@@ -2,12 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-const initialState: IUser = {
+interface IUserSlice extends IUser {
+    onlineUser: string[];
+}
+
+const initialState: IUserSlice = {
     _id: '',
     name: '',
     email: '',
     profile_pic: '',
     token: '',
+    onlineUser: [],
 };
 
 export const userSlice = createSlice({
@@ -28,12 +33,16 @@ export const userSlice = createSlice({
             state.name = '';
             state.email = '';
             state.profile_pic = '';
+            state.token = '';
+        },
+        setOnlineUser: (state, action: PayloadAction<string[]>) => {
+            state.onlineUser = action.payload;
         },
     },
 });
 
 // Action
-export const { setUser, setToken, logout } = userSlice.actions;
+export const { setUser, setToken, logout, setOnlineUser } = userSlice.actions;
 
 //Selector
 // export const getUserCurrentSelector = (state: RootState) => state.userSlice.user;

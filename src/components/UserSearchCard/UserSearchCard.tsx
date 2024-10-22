@@ -17,7 +17,7 @@ const UserSearchCard = ({ user, onClose }: IProps) => {
             className={`d-flex align-items-center gap-4 p-2 p-lg-3 border ${styles['borderCard']} rounded `}
         >
             <div>
-                <Avatar width="50" height="50" name={user.name} imageUrl={user.profile_pic} />
+                <Avatar width="50" height="50" userId={user._id} name={user.name} imageUrl={user.profile_pic} />
             </div>
             <div>
                 <div className="fw-bold">{user.name}</div>

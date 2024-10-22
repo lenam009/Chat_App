@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/redux/hook';
 import React from 'react';
 import { PiUserCircle } from 'react-icons/pi';
 
@@ -10,6 +11,8 @@ interface IProp {
 }
 
 export default function Avatar({ userId, name, imageUrl, width, height }: IProp) {
+    const onlineUser = useAppSelector((state) => state?.userSlice.onlineUser);
+
     let avatarName = '';
 
     if (name) {
@@ -27,13 +30,15 @@ export default function Avatar({ userId, name, imageUrl, width, height }: IProp)
     //@ts-ignore
     const roundNumber = Math.floor(Math.random() * 5);
 
+    const isOnline = onlineUser.includes(userId || '');
+
     return (
-        <div className={`overflow-hidden rounded-circle shadow border fw-bold `} style={{ width: width + 'px', height: height + 'px' }}>
+        <div className={` rounded-circle shadow border fw-bold position-relative`} style={{ width: width + 'px', height: height + 'px' }}>
             {imageUrl ? (
-                <img src={imageUrl} width={width} height={height} alt={name} className="overflow-hidden rounded " />
+                <img src={imageUrl} width={width} height={height} alt={name} className="overflow-hidden rounded-circle " />
             ) : name ? (
                 <div
-                    className={`overflow-hidden rounded d-flex justify-content-center align-items-center fs-5  ${bgColor[roundNumber]}`}
+                    className={`overflow-hidden rounded-circle d-flex justify-content-center align-items-center fs-5  ${bgColor[roundNumber]}`}
                     style={{ width: width + 'px', height: height + 'px' }}
                 >
                     {avatarName}
@@ -41,6 +46,8 @@ export default function Avatar({ userId, name, imageUrl, width, height }: IProp)
             ) : (
                 <PiUserCircle size={width} />
             )}
+
+            {isOnline && <div className="s p-2 position-absolute rounded-circle" style={{ bottom: -2, right: -2, backgroundColor: '#31A73B' }}></div>}
         </div>
     );
 }
