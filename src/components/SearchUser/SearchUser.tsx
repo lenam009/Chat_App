@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IoSearchOutline } from 'react-icons/io5';
+import { IoSearchOutline, IoClose } from 'react-icons/io5';
 import Loading from '../Loading/Loading';
 import UserSearchCard from '../UserSearchCard/UserSearchCard';
 import axiosCreate from '@/api';
@@ -32,8 +32,8 @@ const SearchUser = ({ onClose }: IProps) => {
     console.log('searchUser', searchUser);
 
     return (
-        <div className="position-fixed fixed-top fixed-bottom p-2" style={{ backgroundColor: 'rgba(22,24,35,0.3)' }}>
-            <div className="mx-auto mt-5" style={{ maxWidth: '40%' }}>
+        <div className="position-fixed fixed-top fixed-bottom p-2" style={{ backgroundColor: 'rgba(22,24,35,0.3)' }} onClick={onClose}>
+            <div className="mx-auto mt-5" style={{ maxWidth: '40%' }} onClick={(e) => e.stopPropagation()}>
                 {/** Input Search User */}
                 <div className="bg-white rounded overflow-hidden d-flex" style={{ height: '48px' }}>
                     <input
@@ -67,6 +67,10 @@ const SearchUser = ({ onClose }: IProps) => {
                         !loading &&
                         searchUser.map((user, index) => <UserSearchCard key={user._id} user={user} onClose={onClose} />)}
                 </div>
+            </div>
+
+            <div className="position-absolute p-2" style={{ top: 0, right: 0 }} onClick={onClose}>
+                <button type="button" className="btn-close" aria-label="Close"></button>
             </div>
         </div>
     );

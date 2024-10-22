@@ -53,7 +53,7 @@ export default function Home() {
             </section>
 
             {/**Logo */}
-            <div className={`d-flex justify-content-center align-items-center flex-column gap-3 ${!basePath ? 'd-none' : 'd-block'}`}>
+            <div className={`d-flex justify-content-center align-items-center flex-column gap-3 ${!basePath && 'd-none'}`}>
                 <div>
                     <img src={logo} width={230} alt="logo" />
                 </div>
