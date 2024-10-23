@@ -7,6 +7,7 @@ const Message = new Schema(
         imageUrl: { type: String, default: '' },
         videoUrl: { type: String, default: '' },
         seen: { type: Boolean, default: false },
+        msgByUserId: { type: Schema.ObjectId, require: true, ref: 'User' },
     },
     {
         collection: 'Message',

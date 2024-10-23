@@ -3,6 +3,8 @@ const { Server } = require('socket.io');
 const http = require('http');
 const getUsersDetailFromToken = require('../helpers/getUsersDetailFromToken');
 const User = require('../models/User');
+const Conversation = require('../models/Conversation');
+const Message = require('../models/Message');
 const app = express();
 
 /** Socket connection */
@@ -27,10 +29,8 @@ io.on('connection', async (socket) => {
     const user = await getUsersDetailFromToken(token);
 
     // Create a room
-    socket.join(user?._id);
+    socket.join(user?._id?.toString());
     onlineUser.add(user?._id?.toString());
-
-    // console.log('connect', socket.id);
 
     io.emit('onlineUser', Array.from(onlineUser));
 
@@ -47,15 +47,55 @@ io.on('connection', async (socket) => {
             online: onlineUser.has(userId),
         };
 
-        // console.log('payload');
-
         socket.emit('message-user', payload);
     });
 
-    /**Disconnect */
+    /** New Message */
+    socket.on('new message', async (data) => {
+        //** Check conversation is available both user ? */
+        let conversation = await Conversation.findOne({
+            $or: [
+                { sender: data?.sender, receiver: data?.receiver },
+                { sender: data?.receiver, receiver: data?.sender },
+            ],
+        });
+
+        /** If conversation is not available */
+        if (!conversation) {
+            conversation = await Conversation.create({ sender: data?.sender, receiver: data?.receiver });
+        }
+
+        //** Save message */
+        const saveMessage = await Message.create({
+            text: data?.text,
+            imageUrl: data?.imageUrl,
+            video: data?.videoUrl,
+            msgByUserId: data?.msgByUserId,
+        });
+
+        /** Update Message into Conversation */
+        const updateConversation = await Conversation.updateOne(
+            { _id: conversation._id },
+            { $push: { messages: saveMessage._id } },
+        ).catch((err) => console.log('error updateConversation'));
+
+        const getConversationMessage = await Conversation.findOne({
+            $or: [
+                { sender: data?.sender, receiver: data?.receiver },
+                { sender: data?.receiver, receiver: data?.sender },
+            ],
+        })
+            .populate('messages')
+            .sort({ updatedAt: 'desc' });
+
+        /** Send message to both user */
+        io.to(data?.sender).emit('message', getConversationMessage.messages);
+        io.to(data?.receiver).emit('message', getConversationMessage.messages);
+    });
+
+    /** Disconnect */
     socket.on('disconnect', () => {
         onlineUser.delete(user?._id);
-        // console.log('Disconnect user', socket.id);
     });
 });
 
