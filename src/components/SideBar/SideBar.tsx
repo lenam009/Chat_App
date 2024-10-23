@@ -20,9 +20,9 @@ export default function SideBar() {
     const [openSearchUser, setOpenSearchUser] = useState(false);
 
     return (
-        <div className="w-100 h-100 d-grid bg-white" style={{ gridTemplateColumns: '2fr 8fr' }}>
+        <div className="w-100 h-100 d-grid bg-white" style={{ gridTemplateColumns: '1.5fr 8fr' }}>
             <div
-                className="h-100 py-4 d-flex flex-column justify-content-between w-75"
+                className="h-100 py-4 d-flex flex-column justify-content-between w-100"
                 style={{
                     backgroundColor: 'rgba(22,24,35,0.09)',
                     borderRadius: '0px 8px 8px 0px',

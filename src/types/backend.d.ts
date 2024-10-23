@@ -40,4 +40,11 @@ declare global {
         updatedAt?: string;
         token: string;
     }
+
+    interface IMessage {
+        text: string;
+        imageUrl: string;
+        videoUrl: string;
+        seen: boolean;
+    }
 }
