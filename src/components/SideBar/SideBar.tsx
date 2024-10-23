@@ -70,7 +70,7 @@ export default function SideBar() {
             </div>
 
             <div>
-                <div style={{ height: '64px' }}>
+                <div style={{ height: 'var(--height-header)' }}>
                     <h5 className="p-2 py-3 ">Message</h5>
                 </div>
 

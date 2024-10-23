@@ -29,7 +29,7 @@ const SearchUser = ({ onClose }: IProps) => {
         handleSearchUser();
     }, [search]);
 
-    console.log('searchUser', searchUser);
+    // console.log('searchUser', searchUser);
 
     return (
         <div className="position-fixed fixed-top fixed-bottom p-2" style={{ backgroundColor: 'rgba(22,24,35,0.3)' }} onClick={onClose}>
@@ -52,13 +52,13 @@ const SearchUser = ({ onClose }: IProps) => {
                 <div className="bg-white mt-2 w-100 p-3 rounded  overflow-scroll" style={{ maxHeight: '75vh' }}>
                     {/**No user found */}
                     {searchUser.length === 0 && !loading && (
-                        <p className="text-center mb-0" style={{ color: 'rgba(22,24,35,0.7)' }}>
+                        <p className="text-center" style={{ color: 'rgba(22,24,35,0.7)' }}>
                             No user found!
                         </p>
                     )}
 
                     {loading && (
-                        <p className="mb-0">
+                        <p>
                             <Loading />
                         </p>
                     )}

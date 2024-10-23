@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities; */
 
+:root {
+    --height-header: 64px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -40,6 +44,10 @@ html *::-webkit-scrollbar-track {
 a[href] {
     text-decoration: none;
     color: unset;
+}
+
+p {
+    margin-bottom: 0;
 }
 
 button,

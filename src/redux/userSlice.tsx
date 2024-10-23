@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { Socket } from 'socket.io-client';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 
 interface IUserSlice extends IUser {
     onlineUser: string[];
+    socketConnection: Socket<DefaultEventsMap, DefaultEventsMap> | null;
 }
 
 const initialState: IUserSlice = {
@@ -13,6 +16,7 @@ const initialState: IUserSlice = {
     profile_pic: '',
     token: '',
     onlineUser: [],
+    socketConnection: null,
 };
 
 export const userSlice = createSlice({
@@ -34,15 +38,20 @@ export const userSlice = createSlice({
             state.email = '';
             state.profile_pic = '';
             state.token = '';
+            state.socketConnection = null;
         },
         setOnlineUser: (state, action: PayloadAction<string[]>) => {
             state.onlineUser = action.payload;
+        },
+        setSocketConnection: (state, action: PayloadAction<Socket<DefaultEventsMap, DefaultEventsMap>>) => {
+            //@ts-ignore
+            state.socketConnection = action.payload;
         },
     },
 });
 
 // Action
-export const { setUser, setToken, logout, setOnlineUser } = userSlice.actions;
+export const { setUser, setToken, logout, setOnlineUser, setSocketConnection } = userSlice.actions;
 
 //Selector
 // export const getUserCurrentSelector = (state: RootState) => state.userSlice.user;

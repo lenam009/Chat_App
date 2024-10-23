@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axiosCreate from '@/api';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { getUser, logout, setOnlineUser, setUser } from '@/redux/userSlice';
+import { getUser, logout, setOnlineUser, setSocketConnection, setUser } from '@/redux/userSlice';
 import routes from '@/config/routes';
 import { Height } from '@mui/icons-material';
 import SideBar from '@/components/SideBar/SideBar';
@@ -17,14 +17,14 @@ export default function Home() {
 
     let basePath = location.pathname === '/';
 
-    console.log('basePath', basePath);
+    // console.log('basePath', basePath);
 
     const fetchUserDetails = async () => {
         const URL = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/user/user-details`;
         const result = (await axiosCreate
             .get(URL)
             .then((res) => {
-                console.log('resFetchUserDetails', res);
+                // console.log('resFetchUserDetails', res);
                 dispatch(setUser(res.data));
 
                 return res;
@@ -51,9 +51,10 @@ export default function Home() {
         });
 
         socketConnection.on('onlineUser', (data) => {
-            console.log('data', data);
             dispatch(setOnlineUser(data));
         });
+
+        dispatch(setSocketConnection(socketConnection));
 
         return () => {
             socketConnection.disconnect();
