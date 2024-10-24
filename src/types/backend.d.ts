@@ -38,13 +38,25 @@ declare global {
         password?: string;
         createdAt?: string;
         updatedAt?: string;
-        token: string;
+        token?: string;
+    }
+
+    interface IConversation {
+        _id: string;
+        sender: IUser;
+        receiver: IUser;
+        unseenMsg: number;
+        lastMsg: IMessage;
     }
 
     interface IMessage {
+        _id?: string;
         text: string;
         imageUrl: string;
         videoUrl: string;
-        seen: boolean;
+        seen?: boolean;
+        createdAt?: string;
+        updatedAt?: string;
+        msgByUserId?: string;
     }
 }

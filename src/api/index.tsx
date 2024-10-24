@@ -7,7 +7,6 @@ import { message } from 'antd';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const axiosCreate: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:8088/api/',
     headers: {
         'Content-Type': 'application/json',
     },

@@ -69,17 +69,18 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
 
     const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        e.stopPropagation();
 
         const URL = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/user/update-user`;
 
         setIsUploadPhoto(true);
 
         // Upload photo and Get Url
-        const UrlUploadPhoto = await handleGetUrlUploadPhoto();
+        // const UrlUploadPhoto = await handleGetUrlUploadPhoto();
+
+        console.log('data', data);
 
         const response = (await axiosCreate
-            .put(URL, { ...data, profile_pic: UrlUploadPhoto })
+            .put(URL, { ...data })
             .then((res) => {
                 // Upload Photo
 
@@ -92,6 +93,14 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
                 return res;
             })
             .catch((err) => null)) as IBackendRes<IUser> | null;
+
+        // fetch('http://localhost:8080/api/user/update-user', {
+        //     method: 'put',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     credentials: 'include',
+        //     //@ts-ignore
+        //     body: JSON.stringify(data),
+        // });
 
         setIsUploadPhoto(false);
 

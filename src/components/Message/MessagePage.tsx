@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/redux/hook';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Avatar from '../Avatar/Avatar';
 import { getUser } from '@/redux/userSlice';
@@ -13,6 +13,7 @@ import styles from './MeesagePage.module.scss';
 import uploadFile from '@/helpers/uploadFile';
 import Loading from '../Loading/Loading';
 import backgroundImage from '@/assets/wallapaper.jpeg';
+import moment from 'moment';
 
 export default function MessagePage() {
     const params = useParams();
@@ -21,11 +22,13 @@ export default function MessagePage() {
     const [openImageVideoUpload, setOpenImageVideoUpload] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const [message, setMessage] = useState<IMessage>({
+    const [allMessages, setAllMessages] = useState<IMessage[]>([]);
+    const currentMessageRef = useRef<HTMLInputElement | null>(null);
+
+    const [message, setMessage] = useState({
         text: '',
         imageUrl: '',
         videoUrl: '',
-        seen: false,
     });
 
     const [dataUser, setDataUser] = useState({
@@ -40,16 +43,25 @@ export default function MessagePage() {
         if (socketConnection) {
             socketConnection.emit('message-page', params.userId);
 
+            socketConnection.emit('seen', params.userId);
+
             socketConnection.on('message-user', (data) => {
                 setDataUser(data);
                 // console.log('message-user', data);
             });
 
             socketConnection.on('message', (data) => {
-                console.log('message', data);
+                // console.log('message', data);
+                setAllMessages(data);
             });
         }
     }, [socketConnection, params?.userId, user]);
+
+    useEffect(() => {
+        if (currentMessageRef) {
+            currentMessageRef.current?.scrollIntoView({ block: 'end' });
+        }
+    }, [allMessages]);
 
     const handleUploadImageVideoOpen = () => {
         setOpenImageVideoUpload((prev) => !prev);
@@ -121,8 +133,14 @@ export default function MessagePage() {
                     receiver: dataUser?._id,
                     text: message.text,
                     imageUrl: message.imageUrl,
-                    video: message.videoUrl,
+                    videoUrl: message.videoUrl,
                     msgByUserId: user?._id,
+                });
+
+                setMessage({
+                    text: '',
+                    imageUrl: '',
+                    videoUrl: '',
                 });
             }
         }
@@ -172,10 +190,41 @@ export default function MessagePage() {
                     backgroundColor: 'rgba(22,24,35,0.1)',
                 }}
             >
+                {/** All messages show here */}
+                <div className="d-flex flex-column gap-2 py-2 ps-1" ref={currentMessageRef}>
+                    {allMessages &&
+                        allMessages.map((msg) => (
+                            <div
+                                className={`bg-white p-1 rounded ${user?._id === msg.msgByUserId ? 'ms-auto ' + styles['messageCurrentUser'] : ''}`}
+                                style={{ width: 'fit-content', maxWidth: '28rem' }}
+                            >
+                                <div className="ms-auto">
+                                    {msg.imageUrl && <img src={msg.imageUrl} className="w-100 rounded" style={{ objectFit: 'scale-down' }} />}
+                                </div>
+                                <div className="ms-auto">
+                                    {msg.videoUrl && (
+                                        <video
+                                            src={msg.videoUrl}
+                                            className="w-100 rounded"
+                                            style={{ objectFit: 'scale-down' }}
+                                            controls
+                                            muted
+                                            autoPlay
+                                        />
+                                    )}
+                                </div>
+                                <p className="px-2 ">{msg.text}</p>
+                                <p className="ms-auto" style={{ width: 'fit-content', fontSize: '0.7rem' }}>
+                                    {moment(msg.createdAt).format('hh:mm')}
+                                </p>
+                            </div>
+                        ))}
+                </div>
+
                 {/** Display upload image */}
                 {message.imageUrl && !loading && (
                     <div
-                        className="w-100 h-100 d-flex justify-content-center align-items-center rounded overflow-hidden"
+                        className="w-100 h-100 position-sticky bottom-0 d-flex justify-content-center align-items-center rounded overflow-hidden"
                         style={{ backgroundColor: 'rgba(22,24,35,0.2)' }}
                     >
                         <div onClick={handleClearUploadImage} className="p-1 position-absolute btn btn-danger" style={{ top: 0, right: 0 }}>
@@ -192,10 +241,11 @@ export default function MessagePage() {
                         </div>
                     </div>
                 )}
+
                 {/** Display upload video */}
                 {message.videoUrl && !loading && (
                     <div
-                        className="w-100 h-100 d-flex justify-content-center align-items-center rounded overflow-hidden"
+                        className="w-100 h-100 position-sticky bottom-0 d-flex justify-content-center align-items-center rounded overflow-hidden"
                         style={{ backgroundColor: 'rgba(22,24,35,0.2)' }}
                     >
                         <div onClick={handleClearUploadVideo} className="p-1 position-absolute btn btn-danger" style={{ top: 0, right: 0 }}>
@@ -214,13 +264,13 @@ export default function MessagePage() {
                         </div>
                     </div>
                 )}
+
                 {/** Loading display */}
                 {loading && (
-                    <div className="w-100 h-100 d-flex justify-content-center align-items-center">
+                    <div className="w-100 h-100 position-sticky bottom-0  d-flex justify-content-center align-items-center">
                         <Loading />
                     </div>
                 )}
-                Show all message
             </section>
 
             {/** Send message */}
