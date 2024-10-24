@@ -55,7 +55,7 @@ export default function CheckEmailPage() {
                 </div>
 
                 <h5 className="my-0" style={{ color: '#00acb4' }}>
-                    Welcome to Chat app!
+                    Welcome to Le Nam Chat app!
                 </h5>
 
                 <form className="d-grid gap-1 mt-2" onSubmit={handleOnSubmit}>

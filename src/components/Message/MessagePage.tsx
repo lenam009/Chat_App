@@ -43,14 +43,13 @@ export default function MessagePage() {
         if (socketConnection) {
             socketConnection.emit('message-page', params.userId);
 
-            socketConnection.emit('seen', params.userId);
-
-            socketConnection.on('message-user', (data) => {
+            socketConnection.on('message-user', (data: any) => {
                 setDataUser(data);
                 // console.log('message-user', data);
             });
 
-            socketConnection.on('message', (data) => {
+            socketConnection.on('message', (data: any) => {
+                socketConnection.emit('seen', params.userId);
                 // console.log('message', data);
                 setAllMessages(data);
             });

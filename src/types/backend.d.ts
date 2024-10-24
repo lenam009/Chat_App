@@ -59,4 +59,9 @@ declare global {
         updatedAt?: string;
         msgByUserId?: string;
     }
+
+    interface IUserSlice extends IUser {
+        onlineUser: string[];
+        socketConnection: Socket<DefaultEventsMap, DefaultEventsMap> | null;
+    }
 }

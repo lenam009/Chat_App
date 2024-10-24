@@ -9,7 +9,7 @@ import { setUser } from '@/redux/userSlice';
 
 interface IProps {
     onClose: () => void;
-    user: IUser;
+    user: IUserSlice;
 }
 
 const EditUserDetails = ({ onClose, user }: IProps) => {
@@ -24,10 +24,11 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
     const uploadPhotoRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        setData((prev) => ({ ...prev, ...user }));
+        const { socketConnection, ...rest } = user;
+        setData((prev) => ({ ...prev, ...rest }));
     }, [user]);
 
-    console.log('EditUserDetails_user', user);
+    // console.log('EditUserDetails_user', user);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.currentTarget;
@@ -75,12 +76,12 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
         setIsUploadPhoto(true);
 
         // Upload photo and Get Url
-        // const UrlUploadPhoto = await handleGetUrlUploadPhoto();
+        const UrlUploadPhoto = await handleGetUrlUploadPhoto();
 
         console.log('data', data);
 
         const response = (await axiosCreate
-            .put(URL, { ...data })
+            .put(URL, { ...data, profile_pic: UrlUploadPhoto })
             .then((res) => {
                 // Upload Photo
 

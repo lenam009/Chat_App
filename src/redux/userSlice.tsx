@@ -4,11 +4,6 @@ import { RootState } from './store';
 import { Socket } from 'socket.io-client';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 
-interface IUserSlice extends IUser {
-    onlineUser: string[];
-    socketConnection: Socket<DefaultEventsMap, DefaultEventsMap> | null;
-}
-
 const initialState: IUserSlice = {
     _id: '',
     name: '',

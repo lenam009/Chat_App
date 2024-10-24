@@ -78,7 +78,7 @@ export default function RegisterPage() {
         <div className="mt-5">
             <div className="bg-white w-100  rounded overflow-hidden p-4 mx-auto" style={{ maxWidth: '30%' }}>
                 <h5 className="my-0" style={{ color: '#00acb4' }}>
-                    Welcome to Chat app!
+                    Welcome to Le Nam Chat app!
                 </h5>
 
                 <form className="d-grid gap-1 mt-2" onSubmit={handleOnSubmit}>
@@ -148,11 +148,7 @@ export default function RegisterPage() {
                                 </p>
 
                                 {uploadPhoto && (
-                                    <button
-                                        type="button"
-                                        className="d-flex mx-2 btn btn-outline-danger btn-sm"
-                                        onClick={handleClearUploadPhoto}
-                                    >
+                                    <button type="button" className="d-flex mx-2 btn btn-outline-danger btn-sm" onClick={handleClearUploadPhoto}>
                                         <IoClose />
                                     </button>
                                 )}
