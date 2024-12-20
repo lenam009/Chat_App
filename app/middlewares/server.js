@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const corsPolicy = (app) => {
     const corsOptions = {
         credentials: true,
-        origin: process.env.FRONTEND_URL,
+        origin: [process.env.FRONTEND_URL, 'http://localhost:3001'],
     };
 
     app.use(cors(corsOptions));
