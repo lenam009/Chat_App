@@ -102,7 +102,7 @@ class AuthController {
                 const access_token = await generateAccessToken(user);
                 const refresh_token = await generateRefreshToken(user);
 
-                console.log('access_token', access_token);
+                //console.log('access_token', access_token);
 
                 if (!access_token | !refresh_token) {
                     return next({
