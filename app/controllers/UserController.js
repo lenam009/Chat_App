@@ -75,6 +75,8 @@ class UserController {
         try {
             const { search } = req.body;
 
+            // i: ignore case differences
+            // g :find all
             const query = new RegExp(search, 'i', 'g');
 
             User.find({ $or: [{ name: query }, { email: query }] })

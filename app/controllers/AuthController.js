@@ -52,10 +52,12 @@ class AuthController {
             const userNew = new User(payload);
             const userSave = await userNew.save();
 
+            const { password: passwordSave, ...data } = userSave._doc;
+
             return res.status(201).json({
                 statusCode: 201,
                 message: 'Register successfully',
-                data: userSave,
+                data: data,
             });
         } catch (err) {
             return next({
@@ -124,6 +126,7 @@ class AuthController {
                 });
 
                 const { password, ...payloads } = user._doc;
+
                 return res.status(201).json({
                     statusCode: 201,
                     message: 'Login successfully',
