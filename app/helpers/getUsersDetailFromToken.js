@@ -2,22 +2,24 @@ var jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const getUsersDetailFromToken = async (token) => {
-    if (!token) {
-        return {
-            statusCode: 400,
-            message: 'session out',
-            logout: true,
-            error: 'session out',
-        };
-    }
+    try {
+        if (!token) {
+            return {
+                statusCode: 400,
+                message: 'session out',
+                logout: true,
+                error: 'session out',
+            };
+        }
 
-    const decode = await jwt.verify(token, process.env.ACCESS_KEY);
+        const decode = await jwt.verify(token, process.env.ACCESS_KEY);
 
-    const user = await User.findById(decode.id)
-        .select('-password')
-        .catch(() => null);
+        const user = await User.findById(decode.id)
+            .select('-password')
+            .catch(() => null);
 
-    if (!user) {
+        return user;
+    } catch (err) {
         return {
             statusCode: 400,
             message: 'user invalid',
@@ -25,8 +27,6 @@ const getUsersDetailFromToken = async (token) => {
             error: 'user invalid',
         };
     }
-
-    return user;
 };
 
 module.exports = getUsersDetailFromToken;

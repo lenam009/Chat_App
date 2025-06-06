@@ -20,21 +20,38 @@ const io = new Server(server, {
 
 /** Socket is running at http://localhost:8080 */
 
-// Online user
+// Online users
 const onlineUser = new Set();
 
-io.on('connection', async (socket) => {
+/** Socket middleware */
+io.use(async (socket, next) => {
+    // Get token
     const token = socket.handshake.auth.token;
-
     // Current user
     const user = await getUsersDetailFromToken(token);
 
+    if (user.statusCode && user.statusCode != 200) {
+        next(new Error('Unauthorized'));
+    }
+    socket.user = user;
+    next();
+});
+
+io.on('connection', async (socket) => {
+    // Current user
+    const user = socket.user;
+
     // Create a room
     socket.join(user?._id?.toString());
+
+    // Add a user to list online
     onlineUser.add(user?._id?.toString());
 
+    // Send list of online to all users
     io.emit('onlineUser', Array.from(onlineUser));
 
+    /** Message Page */
+    // Myself is Sender
     socket.on('message-page', async (userId) => {
         const userDetail = await User.findById(userId)
             .select('-password')
@@ -50,20 +67,19 @@ io.on('connection', async (socket) => {
 
         socket.emit('message-user', payload);
 
-        /** Get message at start open messageBox */
+        // Get message at start open messageBox
         const getConversationMessage = await Conversation.findOne({
             $or: [
                 { sender: user?._id, receiver: userId },
                 { sender: userId, receiver: user?._id },
             ],
-        })
-            .populate('messages')
-            .sort({ updatedAt: 'desc' });
+        }).populate({ path: 'messages', options: { sort: { updatedAt: 'asc' } } });
 
         socket.emit('message', getConversationMessage?.messages);
     });
 
-    /** New Message !!!!!! important !!!!!!!!!!!!!!!!!.................................... */
+    /** Send message function !!!!!!!! Important !!!!!!!!!!!!!!!!!.................................... */
+    // Myself is Sender
     socket.on('new message', async (data) => {
         //** Check conversation is available both user ? */
         let conversation = await Conversation.findOne({
@@ -73,7 +89,7 @@ io.on('connection', async (socket) => {
             ],
         });
 
-        /** If conversation is not available */
+        /**Create conversation if conversation is not available */
         if (!conversation) {
             conversation = await Conversation.create({ sender: data?.sender, receiver: data?.receiver });
         }
@@ -97,15 +113,14 @@ io.on('connection', async (socket) => {
                 { sender: data?.sender, receiver: data?.receiver },
                 { sender: data?.receiver, receiver: data?.sender },
             ],
-        })
-            .populate('messages')
-            .sort({ updatedAt: 'desc' });
+        }).populate({ path: 'messages', options: { sort: { updateAt: 'asc' } } });
 
         /** Send message to both user */
         io.to(data?.sender).emit('message', getConversationMessage?.messages);
         io.to(data?.receiver).emit('message', getConversationMessage?.messages);
 
         /** Send conversation */
+        // Optimize by only get conversation between sender and receiver
         const conversationSender = await getConversation(data?.sender);
         const conversationReceiver = await getConversation(data?.receiver);
 
@@ -120,6 +135,8 @@ io.on('connection', async (socket) => {
         socket.emit('conversation', conversation);
     });
 
+    /** Seen */
+    // Myself is Receiver
     socket.on('seen', async (msgByUserId) => {
         const conversation = await Conversation.findOne({
             $or: [
@@ -130,19 +147,17 @@ io.on('connection', async (socket) => {
 
         const conversationMessageId = conversation?.messages || [];
 
-        // console.log('conversation?.messages', conversation?.messages);
-
         const updateMessage = await Message.updateMany(
             { _id: { $in: conversationMessageId }, msgByUserId: msgByUserId },
             { $set: { seen: true } },
         );
 
         /** Send conversation */
-        const conversationSender = await getConversation(user?._id.toString());
         const conversationReceiver = await getConversation(msgByUserId);
+        const conversationSender = await getConversation(user?._id.toString());
 
-        io.to(user?._id.toString()).emit('conversation', conversationSender);
         io.to(msgByUserId).emit('conversation', conversationReceiver);
+        io.to(user?._id.toString()).emit('conversation', conversationSender);
     });
 
     /** Disconnect */

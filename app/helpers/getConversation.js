@@ -1,5 +1,6 @@
 const Conversation = require('../models/Conversation');
 
+// No optimize
 const getConversation = async (currentUserId) => {
     if (currentUserId) {
         const currentUserConversation = await Conversation.find({

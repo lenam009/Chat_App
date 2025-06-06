@@ -6,6 +6,7 @@ var JWTAction = require('../middlewares/JWT.action');
 
 let refreshTokenArray = [];
 
+// No use
 const generateAccessToken = async (user) => {
     const payload = {
         _id: user._id,
@@ -13,15 +14,16 @@ const generateAccessToken = async (user) => {
         isAdmin: user.isAdmin,
     };
 
-    const access_token = await JWTAction.createJWT(payload, process.env.ACCESS_KEY, '7d').catch((err) => null);
+    const access_token = await JWTAction.createJWT(payload, process.env.ACCESS_KEY, '5s').catch((err) => null);
 
     return access_token;
 };
 
+// No use
 const generateRefreshToken = async (user) => {
     const payload = { _id: user._id, email: user.email };
 
-    const refresh_token = await JWTAction.createJWT(payload, process.env.REFRESH_KEY, '8d').catch((err) => null);
+    const refresh_token = await JWTAction.createJWT(payload, process.env.REFRESH_KEY, '5s').catch((err) => null);
 
     return refresh_token;
 };
@@ -69,6 +71,7 @@ class AuthController {
     }
 
     //POST /auth/login
+    // No use
     async login(req, res, next) {
         const user = await User.findOne({ email: req.body.email })
             .then((response) => {
@@ -187,15 +190,14 @@ class AuthController {
                     });
 
                 const tokenData = { id: user._id, email: user.email };
-                const token = await jwt.sign(tokenData, process.env.ACCESS_KEY, { expiresIn: '1d' });
+                const token = await jwt.sign(tokenData, process.env.ACCESS_KEY, { expiresIn: '3d' });
 
-                //Save refresh_token into cookie...
                 res.cookie('token', token, {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'none',
                     path: '/',
-                    maxAge: 60 * 60 * 1000,
+                    maxAge: 60 * 60 * 1000 * 24 * 30,
                 });
 
                 return res.status(200).json({
