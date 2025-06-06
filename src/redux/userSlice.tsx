@@ -11,7 +11,7 @@ const initialState: IUserSlice = {
     profile_pic: '',
     token: '',
     onlineUser: [],
-    socketConnection: null,
+    socketConnection: Socket,
 };
 
 export const userSlice = createSlice({
@@ -33,13 +33,13 @@ export const userSlice = createSlice({
             state.email = '';
             state.profile_pic = '';
             state.token = '';
+            state.onlineUser = [];
             state.socketConnection = null;
         },
         setOnlineUser: (state, action: PayloadAction<string[]>) => {
             state.onlineUser = action.payload;
         },
         setSocketConnection: (state, action: PayloadAction<Socket<DefaultEventsMap, DefaultEventsMap>>) => {
-            //@ts-ignore
             state.socketConnection = action.payload;
         },
     },

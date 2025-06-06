@@ -214,7 +214,7 @@ export default function MessagePage() {
                                 </div>
                                 <p className="px-2 ">{msg.text}</p>
                                 <p className="ms-auto" style={{ width: 'fit-content', fontSize: '0.7rem' }}>
-                                    {moment(msg.createdAt).format('hh:mm')}
+                                    {moment(msg.createdAt).format('DD-MMMM-YYYY hh:mm')}
                                 </p>
                             </div>
                         ))}

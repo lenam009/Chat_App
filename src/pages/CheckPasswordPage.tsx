@@ -83,7 +83,7 @@ export default function CheckPasswordPage() {
                         </label>
                         <div className="">
                             <input
-                                type="text"
+                                type="password"
                                 id="password"
                                 name="password"
                                 placeholder="Enter your password"

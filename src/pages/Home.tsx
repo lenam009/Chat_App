@@ -15,7 +15,7 @@ export default function Home() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    let basePath = location.pathname === '/';
+    let basePath: boolean = location.pathname === '/';
 
     // console.log('basePath', basePath);
 
@@ -30,10 +30,12 @@ export default function Home() {
                 return res;
             })
             .catch((err) => {
-                if (err.logout) {
-                    dispatch(logout());
-                    navigate(routes.email.path);
-                }
+                // if (err.logout) {
+
+                localStorage.removeItem('token');
+                dispatch(logout());
+                navigate(routes.email.path);
+
                 return null;
             })) as IBackendRes<IUser> | null;
     };
@@ -67,18 +69,33 @@ export default function Home() {
                 <SideBar />
             </section>
 
-            {/* Message component */}
+            {basePath ? (
+                /**Logo */
+                <div className={`d-flex justify-content-center align-items-center flex-column gap-3 ${!basePath && 'd-none'}`}>
+                    <div>
+                        <img src={logo} width={230} alt="logo" />
+                    </div>
+                    <p style={{ color: 'rgba(22,24,35,.5)' }}>Select user to send message</p>
+                </div>
+            ) : (
+                /* MessagePage component */
+                <section className={`${basePath && 'd-none'}`}>
+                    <Outlet />
+                </section>
+            )}
+
+            {/* MessagePage component
             <section className={`${basePath && 'd-none'}`}>
                 <Outlet />
             </section>
 
-            {/**Logo */}
+            *Logo
             <div className={`d-flex justify-content-center align-items-center flex-column gap-3 ${!basePath && 'd-none'}`}>
                 <div>
                     <img src={logo} width={230} alt="logo" />
                 </div>
                 <p style={{ color: 'rgba(22,24,35,.5)' }}>Select user to send message</p>
-            </div>
+            </div> */}
         </div>
     );
 }

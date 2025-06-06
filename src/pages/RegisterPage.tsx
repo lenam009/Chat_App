@@ -29,7 +29,7 @@ export default function RegisterPage() {
     };
 
     const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files && e.target.files[0];
+        const file = e.target.files ? e.target.files[0] : null;
 
         if (file) {
             const uploadPhoto = await uploadFile(file)

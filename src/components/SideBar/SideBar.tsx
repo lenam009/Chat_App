@@ -4,11 +4,11 @@ import { IoChatbubbleEllipses } from 'react-icons/io5';
 import { FaUserPlus } from 'react-icons/fa';
 import { TbLogout2 } from 'react-icons/tb';
 import { FiArrowUpLeft } from 'react-icons/fi';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import routes from '@/config/routes';
 import Avatar from '../Avatar/Avatar';
-import { useAppSelector } from '@/redux/hook';
-import { getUser } from '@/redux/userSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { getUser, logout } from '@/redux/userSlice';
 import EditUserDetails from '../EditUserDetails/EditUserDetails';
 import Divider from '../Divider/Divider';
 import SearchUser from '../SearchUser/SearchUser';
@@ -20,29 +20,33 @@ interface IConversationUserData extends IConversation {
 }
 
 export default function SideBar() {
-    const user = useAppSelector(getUser);
+    const currentUser = useAppSelector(getUser);
     const [editUserOpen, setEditUserOpen] = useState(false);
     const [allUser, setAllUser] = useState<IConversationUserData[]>([]);
     const [openSearchUser, setOpenSearchUser] = useState(false);
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const logoutBtn = (e: React.MouseEvent<HTMLElement>) => {
+        localStorage.removeItem('token');
+        dispatch(logout());
+        navigate(routes.email.path);
+    };
+
     const socketConnection = useAppSelector((state) => state?.userSlice?.socketConnection);
 
     useEffect(() => {
-        if (socketConnection && user?._id) {
-            console.log('user', user._id);
+        if (socketConnection && currentUser?._id) {
+            // console.log('currentUser', currentUser._id);
 
-            socketConnection.emit('sidebar', user._id);
+            socketConnection.emit('sidebar', currentUser._id);
 
             socketConnection.on('conversation', (data: IConversation[]) => {
                 console.log('conversation', data);
 
                 const conversationUserData: IConversationUserData[] = data.map((cvs) => {
-                    if (cvs.sender._id === cvs.receiver?._id) {
-                        return {
-                            ...cvs,
-                            userDetails: cvs.sender,
-                        };
-                    } else if (cvs.receiver._id !== user._id) {
+                    if (cvs.receiver._id !== currentUser._id) {
                         return {
                             ...cvs,
                             userDetails: cvs.receiver,
@@ -58,9 +62,9 @@ export default function SideBar() {
                 setAllUser(conversationUserData);
             });
         }
-    }, [socketConnection, user]);
+    }, [socketConnection, currentUser]);
 
-    console.log('allUser', allUser);
+    // console.log('allUser', allUser);
 
     return (
         <div className="w-100 h-100 d-grid bg-white" style={{ gridTemplateColumns: '1.5fr 8fr' }}>
@@ -97,15 +101,16 @@ export default function SideBar() {
                     <button
                         className={`py-3 d-flex justify-content-center align-items-center ${styles['message']}`}
                         style={{ cursor: 'pointer', width: '100%' }}
-                        title={user?.name}
+                        title={currentUser?.name}
                         onClick={() => setEditUserOpen(true)}
                     >
-                        <Avatar width="40" height="40" userId={user?._id} name={user?.name} imageUrl={user?.profile_pic} />
+                        <Avatar width="40" height="40" userId={currentUser?._id} name={currentUser?.name} imageUrl={currentUser?.profile_pic} />
                     </button>
                     <button
                         className={`py-3 d-flex justify-content-center align-items-center ${styles['message']}`}
                         style={{ cursor: 'pointer', width: '100%' }}
                         title="logout"
+                        onClick={logoutBtn}
                     >
                         <TbLogout2 size={20} className="me-2" />
                     </button>
@@ -184,10 +189,10 @@ export default function SideBar() {
                 </div>
             </div>
 
-            {/** edit user details */}
-            {editUserOpen && <EditUserDetails onClose={() => setEditUserOpen(false)} user={user} />}
+            {/** edit currentUser details */}
+            {editUserOpen && <EditUserDetails onClose={() => setEditUserOpen(false)} user={currentUser} />}
 
-            {/** search user */}
+            {/** search currentUser */}
             {openSearchUser && <SearchUser onClose={() => setOpenSearchUser(false)} />}
         </div>
     );

@@ -4,14 +4,7 @@ import Home from '@/pages/Home';
 import CheckEmailPage from '@/pages/CheckEmailPage';
 import CheckPasswordPage from '@/pages/CheckPasswordPage';
 import RegisterPage from '@/pages/RegisterPage';
-import {
-    RouterProvider,
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
-    redirect,
-    Navigate,
-} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, redirect, Navigate } from 'react-router-dom';
 import MessagePage from '@/components/Message/MessagePage';
 import App from '@/App';
 import AuthLayout from '@/layout/auth.layout';
