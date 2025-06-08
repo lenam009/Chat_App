@@ -50,6 +50,8 @@ io.on('connection', async (socket) => {
     // Send list of online to all users
     io.emit('onlineUser', Array.from(onlineUser));
 
+    console.log('onlineUser', onlineUser);
+
     /** Message Page */
     // Myself is Sender
     socket.on('message-page', async (userId) => {
@@ -73,7 +75,7 @@ io.on('connection', async (socket) => {
                 { sender: user?._id, receiver: userId },
                 { sender: userId, receiver: user?._id },
             ],
-        }).populate({ path: 'messages', options: { sort: { updatedAt: 'asc' } } });
+        }).populate({ path: 'messages', options: { sort: { createAt: 'asc' } } });
 
         socket.emit('message', getConversationMessage?.messages);
     });
@@ -113,7 +115,7 @@ io.on('connection', async (socket) => {
                 { sender: data?.sender, receiver: data?.receiver },
                 { sender: data?.receiver, receiver: data?.sender },
             ],
-        }).populate({ path: 'messages', options: { sort: { updateAt: 'asc' } } });
+        }).populate({ path: 'messages', options: { sort: { createAt: 'asc' } } });
 
         /** Send message to both user */
         io.to(data?.sender).emit('message', getConversationMessage?.messages);
@@ -162,7 +164,9 @@ io.on('connection', async (socket) => {
 
     /** Disconnect */
     socket.on('disconnect', () => {
-        onlineUser.delete(user?._id);
+        onlineUser.delete(user?._id.toString());
+
+        io.emit('onlineUser', Array.from(onlineUser));
     });
 });
 

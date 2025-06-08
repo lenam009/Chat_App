@@ -36,4 +36,36 @@ const getConversation = async (currentUserId) => {
     }
 };
 
+// Use in sidebar chatApp
+// **  chỉ xóa và thêm item bị thay đổi trong conversations sidebar của react (xử lý việc thêm xóa này bên react) *********
+const getOneConversation = async (sender, receiver) => {
+    if (sender && receiver) {
+        const currentUserConversation = await Conversation.find({
+            $or: [
+                { sender: sender, receiver: receiver },
+                { sender: receiver, receiver: sender },
+            ],
+        })
+            .populate('sender')
+            .populate('receiver')
+            .populate({ path: 'messages', options: { sort: { createAt: 'asc' } } });
+
+        const constUnseenMsg = currentUserConversation.messages.reduce((prev, curr) => {
+            if (curr.msgByUserId.toString() !== sender) {
+                return prev + (curr.seen ? 0 : 1);
+            } else {
+                return prev;
+            }
+        }, 0);
+
+        return {
+            _id: currentUserConversation.id,
+            receiver: currentUserConversation.receiver,
+            sender: currentUserConversation.sender,
+            unseenMsg: constUnseenMsg,
+            lastMsg: currentUserConversation.messages[currentUserConversation?.messages?.length - 1],
+        };
+    }
+};
+
 module.exports = getConversation;
