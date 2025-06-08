@@ -54,16 +54,18 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
                 .then((res) => res.json())
                 .then((res) => {
                     console.log('res', res);
+
+                    setData((prev) => {
+                        return { ...prev, profile_pic: uploadPhoto.url };
+                    });
+
                     return res;
                 })
                 .catch((err) => console.log('error uploadPhoto', err));
 
-            setData((prev) => {
-                return { ...prev, profile_pic: uploadPhoto.url };
-            });
-
             return uploadPhoto.url;
         }
+        return null;
     };
 
     // console.log('data-1', data);
@@ -78,7 +80,7 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
         // Upload photo and Get Url
         const UrlUploadPhoto = await handleGetUrlUploadPhoto();
 
-        console.log('data', data);
+        // console.log('data', data);
 
         const response = (await axiosCreate
             .put(URL, { ...data, profile_pic: UrlUploadPhoto })
@@ -115,7 +117,7 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
     return (
         <div
             className="d-flex justify-content-center align-items-center"
-            style={{ position: 'fixed', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(22,24,35,0.4)' }}
+            style={{ position: 'fixed', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(22,24,35,0.4)', zIndex: '10' }}
         >
             <div className="bg-white p-4 m-1 my-5 rounded w-25">
                 <h5>Profile Details</h5>

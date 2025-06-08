@@ -4,7 +4,6 @@ import logo from '@/assets/logo.png';
 import { Navigate } from 'react-router-dom';
 
 const isAuthenticated = () => {
-    // return false;
     return !!localStorage.getItem('token'); // hoặc kiểm tra user info
 };
 

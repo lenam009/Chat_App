@@ -39,6 +39,8 @@ export default function MessagePage() {
         online: false,
     });
 
+    // console.log('user', user.onlineUser);
+
     useEffect(() => {
         if (socketConnection) {
             socketConnection.emit('message-page', params.userId);
@@ -50,7 +52,7 @@ export default function MessagePage() {
 
             socketConnection.on('message', (data: any) => {
                 socketConnection.emit('seen', params.userId);
-                // console.log('message', data);
+                console.log('message', data);
                 setAllMessages(data);
             });
         }
@@ -147,6 +149,7 @@ export default function MessagePage() {
 
     return (
         <div className="" style={{ background: `url(${backgroundImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+            {/* Header */}
             <header
                 className="position-sticky top-0 bg-white d-flex justify-content-between align-items-center px-3"
                 style={{ height: 'var(--height-header)' }}
@@ -181,7 +184,6 @@ export default function MessagePage() {
 
             {/** Show all message */}
             <section
-                className="position-relative"
                 style={{
                     height: 'calc(100vh - var(--height-header) * 2)',
                     overflowX: 'hidden',
@@ -213,7 +215,7 @@ export default function MessagePage() {
                                     )}
                                 </div>
                                 <p className="px-2 ">{msg.text}</p>
-                                <p className="ms-auto" style={{ width: 'fit-content', fontSize: '0.7rem' }}>
+                                <p className="px-2" style={{ width: 'fit-content', fontSize: '0.7rem' }}>
                                     {moment(msg.createdAt).format('DD-MMMM-YYYY hh:mm')}
                                 </p>
                             </div>
@@ -274,6 +276,7 @@ export default function MessagePage() {
 
             {/** Send message */}
             <section className="bg-white d-flex align-items-center px-3" style={{ height: 'var(--height-header)' }}>
+                {/* Upload image or video */}
                 <div className="position-relative d-flex align-items-center" style={{ width: '64px', height: '52px' }}>
                     <button onClick={handleUploadImageVideoOpen} className="rounded-circle d-flex align-items-center btn btn-outline-info">
                         <FaPlus size={20} />
@@ -305,7 +308,7 @@ export default function MessagePage() {
                 </div>
 
                 {/**input box */}
-                <form className="w-100 h-100 d-flex gap-2" onSubmit={handleSendMessage}>
+                <form className="w-100 h-100 d-flex" onSubmit={handleSendMessage}>
                     <input
                         className="py-1 px-4 w-100 h-100"
                         type="text"

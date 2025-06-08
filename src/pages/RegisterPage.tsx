@@ -40,6 +40,8 @@ export default function RegisterPage() {
                 })
                 .catch((err) => console.log('error uploadPhoto', err));
 
+            console.log('uploadPhoto', uploadPhoto.url);
+
             setUploadPhoto((prev) => file);
             setData((prev) => ({ ...prev, profile_pic: uploadPhoto.url }));
         }
@@ -143,9 +145,12 @@ export default function RegisterPage() {
                                 className="d-flex justify-content-center align-items-center rounded mt-2"
                                 style={{ backgroundColor: '#E2E8F0', height: '100%', cursor: 'pointer' }}
                             >
-                                <p className="m-0" style={{ maxWidth: '300px' }}>
+                                {/* <p className="m-0" style={{ maxWidth: '300px' }}>
                                     {uploadPhoto ? uploadPhoto.name : ' Upload profile photo'}
-                                </p>
+                                </p> */}
+
+                                {/* @ts-ignore */}
+                                {data.profile_pic ? <img src={data.profile_pic} /> : ' Upload profile photo'}
 
                                 {uploadPhoto && (
                                     <button type="button" className="d-flex mx-2 btn btn-outline-danger btn-sm" onClick={handleClearUploadPhoto}>

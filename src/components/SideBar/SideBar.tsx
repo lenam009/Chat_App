@@ -30,6 +30,7 @@ export default function SideBar() {
 
     const logoutBtn = (e: React.MouseEvent<HTMLElement>) => {
         localStorage.removeItem('token');
+        socketConnection.disconnect(currentUser._id);
         dispatch(logout());
         navigate(routes.email.path);
     };
@@ -43,7 +44,7 @@ export default function SideBar() {
             socketConnection.emit('sidebar', currentUser._id);
 
             socketConnection.on('conversation', (data: IConversation[]) => {
-                console.log('conversation', data);
+                // console.log('conversation', data);
 
                 const conversationUserData: IConversationUserData[] = data.map((cvs) => {
                     if (cvs.receiver._id !== currentUser._id) {
@@ -63,8 +64,6 @@ export default function SideBar() {
             });
         }
     }, [socketConnection, currentUser]);
-
-    // console.log('allUser', allUser);
 
     return (
         <div className="w-100 h-100 d-grid bg-white" style={{ gridTemplateColumns: '1.5fr 8fr' }}>
@@ -117,6 +116,7 @@ export default function SideBar() {
                 </div>
             </div>
 
+            {/* Message Box */}
             <div>
                 <div style={{ height: 'var(--height-header)' }}>
                     <h5 className="p-2 py-3 ">Message</h5>
@@ -189,11 +189,11 @@ export default function SideBar() {
                 </div>
             </div>
 
-            {/** edit currentUser details */}
-            {editUserOpen && <EditUserDetails onClose={() => setEditUserOpen(false)} user={currentUser} />}
-
             {/** search currentUser */}
             {openSearchUser && <SearchUser onClose={() => setOpenSearchUser(false)} />}
+
+            {/** edit currentUser details */}
+            {editUserOpen && <EditUserDetails onClose={() => setEditUserOpen(false)} user={currentUser} />}
         </div>
     );
 }

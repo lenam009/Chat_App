@@ -15,7 +15,7 @@ const SearchUser = ({ onClose }: IProps) => {
 
     const handleSearchUser = async () => {
         const URL = `${process.env.REACT_APP_PUBLIC_BACKEND_URL}/user/search-users`;
-
+        setLoading(true);
         const response = (await axiosCreate
             .post(URL, { search })
             .then((res) => {
@@ -23,10 +23,15 @@ const SearchUser = ({ onClose }: IProps) => {
                 setSearchUser(res.data);
             })
             .catch((err) => null)) as IBackendRes<IUser> | null;
+        setLoading(false);
     };
 
     useEffect(() => {
-        handleSearchUser();
+        const timeout = setTimeout(() => {
+            handleSearchUser();
+        }, 1000);
+
+        return () => clearTimeout(timeout);
     }, [search]);
 
     // console.log('searchUser', searchUser);

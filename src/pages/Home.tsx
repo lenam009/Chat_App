@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axiosCreate from '@/api';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { getUser, logout, setOnlineUser, setSocketConnection, setUser } from '@/redux/userSlice';
@@ -63,7 +63,13 @@ export default function Home() {
         };
     }, []);
 
-    return (
+    const isAuthenticated = () => {
+        return !!localStorage.getItem('token'); // hoặc kiểm tra user info
+    };
+
+    return !isAuthenticated() ? (
+        <Navigate to={routes.email.path} />
+    ) : (
         <div className="d-grid " style={{ gridTemplateColumns: '2fr 8fr', height: '100vh' }}>
             <section className={`bg-white `}>
                 <SideBar />
@@ -71,31 +77,21 @@ export default function Home() {
 
             {basePath ? (
                 /**Logo */
-                <div className={`d-flex justify-content-center align-items-center flex-column gap-3 ${!basePath && 'd-none'}`}>
+                <div className={`d-flex justify-content-center align-items-center flex-column gap-3 `}>
                     <div>
                         <img src={logo} width={230} alt="logo" />
                     </div>
                     <p style={{ color: 'rgba(22,24,35,.5)' }}>Select user to send message</p>
                 </div>
             ) : (
-                /* MessagePage component */
-                <section className={`${basePath && 'd-none'}`}>
-                    <Outlet />
-                </section>
+                user.socketConnection &&
+                user.socketConnection.connected && (
+                    /* MessagePage component */
+                    <section>
+                        <Outlet />
+                    </section>
+                )
             )}
-
-            {/* MessagePage component
-            <section className={`${basePath && 'd-none'}`}>
-                <Outlet />
-            </section>
-
-            *Logo
-            <div className={`d-flex justify-content-center align-items-center flex-column gap-3 ${!basePath && 'd-none'}`}>
-                <div>
-                    <img src={logo} width={230} alt="logo" />
-                </div>
-                <p style={{ color: 'rgba(22,24,35,.5)' }}>Select user to send message</p>
-            </div> */}
         </div>
     );
 }
