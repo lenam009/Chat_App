@@ -2,6 +2,8 @@ const express = require('express');
 const UserController = require('../controllers/UserController');
 const router = express.Router();
 
+/** dùng router use để check token của toàn route */
+// router.use(authenticationMiddleware.checkToken);
 router.get('/user-details', UserController.userDetails);
 
 router.put('/update-user', UserController.updateUserDetails);
