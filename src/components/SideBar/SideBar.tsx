@@ -147,6 +147,7 @@ export default function SideBar() {
                             </div>
                             <div>
                                 <h5 className="">{cvs.userDetails.name}</h5>
+                                {/* Last message */}
                                 <div className="d-flex align-items-center ">
                                     <div className="d-flex align-items-center gap-1">
                                         {cvs.lastMsg?.imageUrl && (
