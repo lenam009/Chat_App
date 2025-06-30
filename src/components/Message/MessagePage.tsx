@@ -60,7 +60,7 @@ export default function MessagePage() {
 
     useEffect(() => {
         if (currentMessageRef) {
-            currentMessageRef.current?.scrollIntoView({ block: 'end' });
+            currentMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
     }, [allMessages]);
 
