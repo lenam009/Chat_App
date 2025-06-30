@@ -28,6 +28,8 @@ export default function SideBar() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    console.log('allUser', allUser);
+
     const logoutBtn = (e: React.MouseEvent<HTMLElement>) => {
         localStorage.removeItem('token');
         socketConnection.disconnect(currentUser._id);

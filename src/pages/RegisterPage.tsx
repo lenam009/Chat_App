@@ -78,7 +78,7 @@ export default function RegisterPage() {
 
     return (
         <div className="mt-5">
-            <div className="bg-white w-100  rounded overflow-hidden p-4 mx-auto" style={{ maxWidth: '30%' }}>
+            <div className="bg-white w-100  rounded  p-4 mx-auto" style={{ maxWidth: '30%' }}>
                 <h5 className="my-0" style={{ color: '#00acb4' }}>
                     Welcome to Le Nam Chat app!
                 </h5>
@@ -142,7 +142,9 @@ export default function RegisterPage() {
                         <label htmlFor="profile_pic" className="col-form-label">
                             Photo:
                             <div
-                                className="d-flex justify-content-center align-items-center rounded mt-2"
+                                className={`d-flex flex-column justify-content-center ${
+                                    uploadPhoto && 'justify-content-between'
+                                } align-items-center rounded mt-2`}
                                 style={{ backgroundColor: '#E2E8F0', height: '100%', cursor: 'pointer' }}
                             >
                                 {/* <p className="m-0" style={{ maxWidth: '300px' }}>
@@ -150,7 +152,7 @@ export default function RegisterPage() {
                                 </p> */}
 
                                 {/* @ts-ignore */}
-                                {data.profile_pic ? <img src={data.profile_pic} /> : ' Upload profile photo'}
+                                {data.profile_pic ? <img className="w-100" src={data.profile_pic} /> : ' Upload profile photo'}
 
                                 {uploadPhoto && (
                                     <button type="button" className="d-flex mx-2 btn btn-outline-danger btn-sm" onClick={handleClearUploadPhoto}>
