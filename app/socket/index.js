@@ -164,7 +164,7 @@ io.on('connection', async (socket) => {
 
     /** Disconnect */
     socket.on('disconnect', () => {
-        if (onlineUser.size !== 0) onlineUser.delete(user?._id.toString());
+        if (onlineUser.size !== 0 && user && user._id) onlineUser.delete(user?._id.toString());
 
         io.emit('onlineUser', Array.from(onlineUser));
     });
