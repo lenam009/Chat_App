@@ -69,6 +69,7 @@ export default function SideBar() {
 
     return (
         <div className="w-100 h-100 d-grid bg-white" style={{ gridTemplateColumns: '1.5fr 8fr' }}>
+            {/* Functions */}
             <div
                 className="h-100 py-4 d-flex flex-column justify-content-between w-100"
                 style={{
