@@ -199,10 +199,8 @@ export default function MessagePage() {
                                 className={`bg-white p-1 rounded ${user?._id === msg.msgByUserId ? 'ms-auto ' + styles['messageCurrentUser'] : ''}`}
                                 style={{ width: 'fit-content', maxWidth: '28rem' }}
                             >
-                                <div className="ms-auto">
-                                    {msg.imageUrl && <img src={msg.imageUrl} className="w-100 rounded" style={{ objectFit: 'scale-down' }} />}
-                                </div>
-                                <div className="ms-auto">
+                                <div>{msg.imageUrl && <img src={msg.imageUrl} className="w-100 rounded" style={{ objectFit: 'scale-down' }} />}</div>
+                                <div>
                                     {msg.videoUrl && (
                                         <video
                                             src={msg.videoUrl}
