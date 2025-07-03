@@ -21,10 +21,13 @@ const getConversation = async (currentUserId) => {
                 }
             }, 0);
 
+            const { password, ...receiver } = cvs.receiver._doc;
+            const { password: passwordSender, ...sender } = cvs.sender._doc;
+
             return {
                 _id: cvs.id,
-                receiver: cvs.receiver,
-                sender: cvs.sender,
+                receiver,
+                sender,
                 unseenMsg: constUnseenMsg,
                 lastMsg: cvs.messages[cvs?.messages?.length - 1],
             };

@@ -134,6 +134,8 @@ io.on('connection', async (socket) => {
     socket.on('sidebar', async (currentUserId) => {
         const conversation = await getConversation(currentUserId);
 
+        console.log('conversation side bar', conversation);
+
         socket.emit('conversation', conversation);
     });
 
