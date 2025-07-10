@@ -61,7 +61,7 @@ export default function CheckEmailPage() {
                 <form className="d-grid gap-1 mt-2" onSubmit={handleOnSubmit}>
                     <div className="d-flex flex-column gap-1">
                         <label htmlFor="email" className=" col-form-label">
-                            Email: <span className="text-danger">(***Xin nhập admin@gmail.com để test cho nhanh***)</span>
+                            Email: <span className="text-danger">(***Xin nhập admin@gmail.com và jamas009@gmail.com để test cho nhanh***)</span>
                         </label>
                         <div className="">
                             <input
