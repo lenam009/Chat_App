@@ -97,14 +97,6 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
             })
             .catch((err) => null)) as IBackendRes<IUser> | null;
 
-        // fetch('http://localhost:8080/api/user/update-user', {
-        //     method: 'put',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     credentials: 'include',
-        //     //@ts-ignore
-        //     body: JSON.stringify(data),
-        // });
-
         setIsUploadPhoto(false);
 
         // Refresh page to refresh profile_pic
