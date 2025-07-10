@@ -22,6 +22,7 @@ const getConversation = async (currentUserId) => {
             }, 0);
 
             const { password, ...receiver } = cvs.receiver._doc;
+            // console.log('cvs', cvs);
             const { password: passwordSender, ...sender } = cvs.sender._doc;
 
             return {
