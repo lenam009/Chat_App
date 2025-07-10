@@ -9,6 +9,8 @@ class UserController {
 
             const token = req.cookies.token || '';
 
+            console.log('token', token);
+
             const user = await getUsersDetailFromToken(token);
 
             if (user.statusCode && user.statusCode != 200)
