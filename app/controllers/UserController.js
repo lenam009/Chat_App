@@ -9,7 +9,7 @@ class UserController {
 
             const token = req.cookies.token || '';
 
-            console.log('token', token);
+            // console.log('token', token);
 
             const user = await getUsersDetailFromToken(token);
 
