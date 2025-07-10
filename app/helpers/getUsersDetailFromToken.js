@@ -8,7 +8,7 @@ const getUsersDetailFromToken = async (token) => {
                 statusCode: 400,
                 message: 'session out',
                 logout: true,
-                error: 'session out',
+                error: 'getUsersDetailFromToken error',
             };
         }
 
@@ -24,7 +24,7 @@ const getUsersDetailFromToken = async (token) => {
             statusCode: 400,
             message: 'user invalid',
             logout: true,
-            error: 'user invalid',
+            error: 'getUsersDetailFromToken error',
         };
     }
 };

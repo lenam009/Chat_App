@@ -16,7 +16,7 @@ class UserController {
                     statusCode: 400,
                     message: 'session out',
                     logout: true,
-                    error: 'session out',
+                    error: 'userDetails error',
                 });
 
             return res.status(200).json({
