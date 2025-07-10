@@ -46,7 +46,7 @@ export default function Home() {
 
     /** Socket Connection */
     useEffect(() => {
-        const socketConnection = io('http://localhost:8080', {
+        const socketConnection = io(process.env.REACT_APP_PUBLIC_BACKEND_ORIGIN_URL, {
             auth: {
                 token: localStorage.getItem('token'),
             },
