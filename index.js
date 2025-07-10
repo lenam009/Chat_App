@@ -20,7 +20,7 @@ app.get('/', (req, res, next) => {
     res.send('Welcome to cloudls ');
 });
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`);
 });
