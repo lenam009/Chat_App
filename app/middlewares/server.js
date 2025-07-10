@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const corsPolicy = (app) => {
     const corsOptions = {
         credentials: true,
-        origin: [process.env.FRONTEND_URL, 'http://localhost:3001'],
+        origin: [process.env.FRONTEND_URL, 'http://localhost:3001', 'https://chat-app-zeta-green-63.vercel.app'],
     };
 
     app.use(cors(corsOptions));

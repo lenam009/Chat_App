@@ -196,7 +196,7 @@ class AuthController {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'none',
-                    path: '/',
+                    // path: '/',
                     maxAge: 60 * 60 * 1000 * 24 * 30,
                 });
 
