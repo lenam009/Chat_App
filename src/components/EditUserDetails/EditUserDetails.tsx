@@ -53,7 +53,7 @@ const EditUserDetails = ({ onClose, user }: IProps) => {
             const uploadPhoto = await uploadFile(file)
                 .then((res) => res.json())
                 .then((res) => {
-                    console.log('res', res);
+                    // console.log('res', res);
 
                     setData((prev) => {
                         return { ...prev, profile_pic: uploadPhoto.url };

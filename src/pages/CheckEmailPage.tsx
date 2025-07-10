@@ -11,7 +11,7 @@ import axiosCreate from '@/api';
 
 export default function CheckEmailPage() {
     const [data, setData] = useState({
-        email: '',
+        email: 'admin@gmail.com',
     });
 
     const navigate = useNavigate();
@@ -61,7 +61,7 @@ export default function CheckEmailPage() {
                 <form className="d-grid gap-1 mt-2" onSubmit={handleOnSubmit}>
                     <div className="d-flex flex-column gap-1">
                         <label htmlFor="email" className=" col-form-label">
-                            Email:
+                            Email: <span className="text-danger">(***Xin nhập admin@gmail.com để test cho nhanh***)</span>
                         </label>
                         <div className="">
                             <input

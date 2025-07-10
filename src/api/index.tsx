@@ -74,7 +74,7 @@ axiosCreate.interceptors.response.use(
         return response.data as IBackendRes<any>;
     },
     function (error: AxiosError<IBackendRes<any>>) {
-        message.error(error.response?.data.message);
+        // message.error(error.response?.data.message);
         return Promise.reject(error.response?.data);
     },
 );

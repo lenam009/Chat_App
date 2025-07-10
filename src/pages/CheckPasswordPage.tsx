@@ -14,7 +14,7 @@ import { setToken, setUser } from '@/redux/userSlice';
 
 export default function CheckPasswordPage() {
     const [data, setData] = useState({
-        password: '',
+        password: '123',
     });
 
     const navigate = useNavigate();
@@ -79,7 +79,7 @@ export default function CheckPasswordPage() {
                 <form className="d-grid gap-1 mt-2" onSubmit={handleOnSubmit}>
                     <div className="d-flex flex-column gap-1">
                         <label htmlFor="password" className=" col-form-label">
-                            Password:
+                            Password: <span className="text-danger">(***Xin nhập pass 123 để test cho nhanh***)</span>
                         </label>
                         <div className="">
                             <input
